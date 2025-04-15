@@ -2,8 +2,12 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
-  tags: []
+  serializedVersion: 3
+  tags:
+  - stage/ground
+  - stage/goal
+  - character/player
+  - character/enemy
   layers:
   - Default
   - TransparentFX
@@ -11,12 +15,12 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - stage/ground
+  - stage/goal
+  - character/player
+  - character/enemy
+  - event_trigger/word
+  - event_trigger/wordpanel
   - 
   - 
   - 
@@ -41,3 +45,5 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  m_RenderingLayers:
+  - Default

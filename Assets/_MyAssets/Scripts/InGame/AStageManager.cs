@@ -1,0 +1,103 @@
+using System;
+using UnityEngine;
+
+namespace NInGame
+{
+    public abstract class AStageManager : MonoBehaviour
+    {
+        [SerializeField] private Player player;
+        [SerializeField] private Enemy[] enemies;
+
+        // nullでも良い、はめ込む先のTransform
+        [SerializeField] private Transform walk;
+        [SerializeField] private Transform run;
+        [SerializeField] private Transform stop;
+        [SerializeField] private Transform jump;
+        [SerializeField] private Transform initI;
+        [SerializeField] private Transform initU;
+
+        [SerializeField] private Word wordI;
+        [SerializeField] private Word wordU;
+
+        private Word[] words = null;
+
+        private void Awake()
+        {
+            words = new Word[] { wordI, wordU };
+
+            if (wordI != null)
+            {
+                wordI.CheckPutOnPointerUp = CheckPutOnPointerUp;
+                wordI.OnPut = (state) =>
+                {
+                    if (player != null)
+                        player.State = state;
+                };
+            }
+
+            if (wordU != null)
+            {
+                wordU.CheckPutOnPointerUp = CheckPutOnPointerUp;
+                wordU.OnPut = (state) =>
+                {
+                    foreach (Enemy enemy in enemies)
+                        if (enemy != null)
+                            enemy.State = state;
+                };
+            }
+        }
+
+        private void OnDestroy()
+        {
+            Array.Clear(words, 0, words.Length);
+        }
+
+        // 重なっているなら、はめ込める
+        // はめ込む座標（無理ならnull）、はめ込み先の種類、既にはめ込んであって無理だったか
+        private (Vector3?, CharacterState, bool) CheckPutOnPointerUp(Transform src)
+        {
+            if (src == null) return (null, CharacterState.None, false);
+
+            Transform[] dstTrasforms = { walk, run, stop, jump };
+            CharacterState[] dstTypes = { CharacterState.Walk, CharacterState.Run, CharacterState.Stop, CharacterState.Jump };
+
+            for (int i = 0; i < dstTrasforms.Length; i++)
+            {
+                Transform dst = dstTrasforms[i];
+                if (dst == null) continue;
+
+                Vector3 srcPos = src.position;
+                Vector3 srcScl = src.lossyScale;
+                Vector3 srcTop = srcPos + Vector3.up * (srcScl.y * 0.5f);
+                Vector3 srcBottom = srcPos - Vector3.up * (srcScl.y * 0.5f);
+                Vector3 srcLeft = srcPos - Vector3.right * (srcScl.x * 0.5f);
+                Vector3 srcRight = srcPos + Vector3.right * (srcScl.x * 0.5f);
+
+                Vector3 dstPos = dst.position;
+                Vector3 dstScl = dst.lossyScale;
+                Vector3 dstTop = dstPos + Vector3.up * (dstScl.y * 0.5f);
+                Vector3 dstBottom = dstPos - Vector3.up * (dstScl.y * 0.5f);
+                Vector3 dstLeft = dstPos - Vector3.right * (dstScl.x * 0.5f);
+                Vector3 dstRight = dstPos + Vector3.right * (dstScl.x * 0.5f);
+
+                bool canPut = srcTop.y > dstBottom.y && srcBottom.y < dstTop.y &&
+                              srcLeft.x < dstRight.x && srcRight.x > dstLeft.x;
+
+                if (canPut)
+                {
+                    // すでにはめ込まれている (＝dstの座標に、wordsのいずれかがある) なら、はめ込めない
+                    foreach (Word word in words)
+                    {
+                        if (word == null) continue;
+                        if ((Vector2)word.Position == (Vector2)dst.position)
+                            return (null, CharacterState.None, true);
+                    }
+
+                    return (dstPos, dstTypes[i], false);
+                }
+            }
+
+            return (null, CharacterState.None, false);
+        }
+    }
+}
