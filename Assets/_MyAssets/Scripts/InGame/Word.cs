@@ -64,6 +64,7 @@ namespace NInGame
                 origin = putPosition.Value.SetZ(10);
                 transform.position = origin;
                 putState = state;
+                OnPut?.Invoke(putState);
             }
             else if (existed) // はめ込んであるところに、はめ込もうとした
             {
@@ -73,11 +74,13 @@ namespace NInGame
             {
                 origin = initPosition.SetZ(10);
                 transform.position = origin;
-                putState = state; // Noneのはず
+                putState = CharacterState.Stop;
+                OnPut?.Invoke(putState);
             }
-
-            if (putPosition.HasValue)
-                OnPut?.Invoke(state);
+            else // 何もないところに、はめ込もうとした
+            {
+                transform.position = origin;
+            }
         }
     }
 }

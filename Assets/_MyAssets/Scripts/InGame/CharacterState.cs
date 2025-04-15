@@ -3,9 +3,9 @@ namespace NInGame
     public enum CharacterState
     {
         None,
+        Stop,
         Walk,
         Run,
-        Stop,
         Jump,
     }
 }

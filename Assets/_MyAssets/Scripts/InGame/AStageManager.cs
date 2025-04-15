@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace NInGame
@@ -11,27 +10,22 @@ namespace NInGame
         // nullでも良い、はめ込む先のTransform
         [SerializeField] private Transform walk;
         [SerializeField] private Transform run;
-        [SerializeField] private Transform stop;
         [SerializeField] private Transform jump;
-        [SerializeField] private Transform initI;
-        [SerializeField] private Transform initU;
 
         [SerializeField] private Word wordI;
         [SerializeField] private Word wordU;
 
-        private Word[] words = null;
+        [SerializeField] private ResultManager resultManager;
 
         private void Awake()
         {
-            words = new Word[] { wordI, wordU };
-
             if (wordI != null)
             {
                 wordI.CheckPutOnPointerUp = CheckPutOnPointerUp;
                 wordI.OnPut = (state) =>
                 {
                     if (player != null)
-                        player.State = state;
+                        player.NowState = state;
                 };
             }
 
@@ -42,24 +36,25 @@ namespace NInGame
                 {
                     foreach (Enemy enemy in enemies)
                         if (enemy != null)
-                            enemy.State = state;
+                            enemy.NowState = state;
                 };
             }
-        }
 
-        private void OnDestroy()
-        {
-            Array.Clear(words, 0, words.Length);
+            if (player != null)
+            {
+                player.OnPlayerFailed = () => OnGameEnded(false);
+                player.OnPlayerCleared = () => OnGameEnded(true);
+            }
         }
 
         // 重なっているなら、はめ込める
         // はめ込む座標（無理ならnull）、はめ込み先の種類、既にはめ込んであって無理だったか
         private (Vector3?, CharacterState, bool) CheckPutOnPointerUp(Transform src)
         {
-            if (src == null) return (null, CharacterState.None, false);
+            if (src == null) return default;
 
-            Transform[] dstTrasforms = { walk, run, stop, jump };
-            CharacterState[] dstTypes = { CharacterState.Walk, CharacterState.Run, CharacterState.Stop, CharacterState.Jump };
+            Transform[] dstTrasforms = { walk, run, jump };
+            CharacterState[] dstTypes = { CharacterState.Walk, CharacterState.Run, CharacterState.Jump };
 
             for (int i = 0; i < dstTrasforms.Length; i++)
             {
@@ -86,6 +81,7 @@ namespace NInGame
                 if (canPut)
                 {
                     // すでにはめ込まれている (＝dstの座標に、wordsのいずれかがある) なら、はめ込めない
+                    Word[] words = new Word[] { wordI, wordU };
                     foreach (Word word in words)
                     {
                         if (word == null) continue;
@@ -97,7 +93,13 @@ namespace NInGame
                 }
             }
 
-            return (null, CharacterState.None, false);
+            return default;
+        }
+
+        private void OnGameEnded(bool cleared)
+        {
+            if (resultManager != null)
+                resultManager.Show(cleared);
         }
     }
 }
