@@ -8,8 +8,6 @@ namespace NInGame
         public Action OnPlayerFailed { get; set; } = null;
         public Action OnPlayerCleared { get; set; } = null;
 
-        protected override Vector3 Forward => transform.right;
-
         protected override void OnDied() => OnPlayerFailed?.Invoke();
 
         private void OnCollisionEnter2D(Collision2D collision)

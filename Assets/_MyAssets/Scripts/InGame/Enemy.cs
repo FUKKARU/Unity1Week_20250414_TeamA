@@ -1,9 +1,9 @@
-using UnityEngine;
-
 namespace NInGame
 {
     public sealed class Enemy : ACharacter
     {
-        protected override Vector3 Forward => -transform.right;
+        public bool Died { get; private set; } = false;
+
+        protected override void OnDied() => Died |= true;
     }
 }

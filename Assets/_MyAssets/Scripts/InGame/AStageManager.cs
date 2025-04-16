@@ -17,6 +17,8 @@ namespace NInGame
 
         [SerializeField] private ResultManager resultManager;
 
+        private bool hasAllEnemiesDied = false;
+
         private void Awake()
         {
             if (wordI != null)
@@ -45,6 +47,11 @@ namespace NInGame
                 player.OnPlayerFailed = () => OnGameEnded(false);
                 player.OnPlayerCleared = () => OnGameEnded(true);
             }
+        }
+
+        private void Update()
+        {
+            CheckEnemiesDied();
         }
 
         // 重なっているなら、はめ込める
@@ -94,6 +101,20 @@ namespace NInGame
             }
 
             return default;
+        }
+
+        private void CheckEnemiesDied()
+        {
+            if (hasAllEnemiesDied) return;
+
+            foreach (Enemy enemy in enemies)
+            {
+                if (enemy == null) continue;
+                if (!enemy.Died) return;
+            }
+
+            hasAllEnemiesDied = true;
+            OnGameEnded(false);
         }
 
         private void OnGameEnded(bool cleared)

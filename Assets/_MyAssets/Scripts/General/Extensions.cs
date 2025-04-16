@@ -25,5 +25,14 @@ namespace NGeneral
             vector.z = z;
             return vector;
         }
+
+        /// <summary>
+        /// X[a, b] を Y[c, d] に線形変換する
+        /// </summary
+        public static float Remap(this float x, float a, float b, float c, float d)
+        {
+            if (a == b) return 0;
+            return (x - a) * (d - c) / (b - a) + c;
+        }
     }
 }

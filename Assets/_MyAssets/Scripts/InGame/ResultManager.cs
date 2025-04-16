@@ -32,6 +32,8 @@ namespace NInGame
             if (isShowing) return;
             isShowing = true;
 
+            Time.timeScale = 0f;
+
             if (text != null) text.text = cleared ? "Game Clear !!!" : "Failed ...";
             if (parent != null) parent.gameObject.SetActive(true);
         }

@@ -13,7 +13,7 @@ namespace NInGame
         public State NowState { get; set; } = State.Stop;
         private State preState = State.Stop;
 
-        protected abstract Vector3 Forward { get; }
+        protected virtual Vector3 Forward => transform.right;
         protected virtual void OnDied() { }
 
         private bool hasDied = false;
