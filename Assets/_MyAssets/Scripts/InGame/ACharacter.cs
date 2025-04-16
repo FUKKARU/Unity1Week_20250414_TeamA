@@ -61,7 +61,7 @@ namespace NInGame
         private void Move(float velocity)
         {
             if (rigidbody != null)
-                rigidbody.linearVelocity = Forward * velocity;
+                rigidbody.linearVelocity = Quaternion.AngleAxis(transform.eulerAngles.z, Vector3.forward) * Forward * velocity;
         }
 
         private void Jump(float force)
@@ -100,14 +100,18 @@ namespace NInGame
         {
             if (rigidbody != null)
             {
-                Vector3 velocity = rigidbody.linearVelocity;
-
                 float angle = transform.eulerAngles.z;
-                Vector3 relativeVeloity = Quaternion.AngleAxis(angle, Vector3.back) * velocity;
-                relativeVeloity.x = 0;
-                Vector3 worldVelocity = Quaternion.AngleAxis(-angle, Vector3.back) * relativeVeloity;
+                float cos = Mathf.Cos(angle * Mathf.Deg2Rad);
+                float sin = Mathf.Sin(angle * Mathf.Deg2Rad);
+                float cos2 = Mathf.Cos(angle * 2 * Mathf.Deg2Rad);
 
-                rigidbody.linearVelocity = worldVelocity;
+                float vx = rigidbody.linearVelocity.x;
+                float vy = rigidbody.linearVelocity.y;
+
+                float coef = (-vx * sin + vy * cos) / cos2;
+                Vector3 velocity = coef * new Vector2(sin, cos);
+
+                rigidbody.linearVelocity = velocity;
             }
         }
 
