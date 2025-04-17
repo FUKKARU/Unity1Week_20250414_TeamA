@@ -12,7 +12,8 @@ namespace NInGame
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (collision.gameObject.CompareTag("character/enemy"))
+            if (collision.gameObject.CompareTag("character/enemy") ||
+                collision.gameObject.tag.Contains("stage/spike"))
                 OnPlayerFailed?.Invoke();
         }
 

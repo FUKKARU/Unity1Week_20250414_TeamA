@@ -8,6 +8,7 @@ TagManager:
   - stage/goal
   - character/player
   - character/enemy
+  - stage/spike/normal
   layers:
   - Default
   - TransparentFX
