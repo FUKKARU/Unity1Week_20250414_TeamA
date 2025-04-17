@@ -13,17 +13,17 @@ namespace NInGame
         [SerializeField] private EventTrigger eventTrigger;
 
         private bool isFollowing = false;
-        private Vector3 initPosition;
-        private Vector3 origin;
+        private Vector3 initPosition; // 最初に置かれていた座標
+        private Vector3 putPosition; // 現在、ドラッグを話したときに、どこの座標に持っていくべきか
+        private Sentence nowSentence = null; // 現在、はめ込まれているSentence
 
         // どこに嵌め込まれているかを保存
         private CharacterState putState = CharacterState.None;
 
         public Vector2 Position => transform.localPosition;
 
-        // 単語をはめ込めるか調べ、はめ込めるならその座標を、はめ込めないならnullを返す
-        // はめ込んだものの種類も返す
-        public Func<Transform, (Vector3?, CharacterState, bool)> CheckPutOnPointerUp { get; set; } = null;
+        // 単語をはめ込めるか調べる
+        public Func<Transform, (Vector3?, CharacterState, bool, Sentence)> CheckPutOnPointerUp { get; set; } = null;
 
         // はめ込んだ際に実行する
         public Action<CharacterState> OnPut { get; set; } = null;
@@ -31,7 +31,7 @@ namespace NInGame
         private void Start()
         {
             initPosition = transform.localPosition;
-            origin = transform.localPosition;
+            putPosition = initPosition;
 
             if (eventTrigger != null)
             {
@@ -66,30 +66,51 @@ namespace NInGame
         {
             isFollowing = false;
 
-            (Vector3? putPosition, CharacterState state, bool existed) = CheckPutOnPointerUp?.Invoke(transform) ?? default;
+            (Vector3? putPosition, CharacterState state, bool existed, Sentence putSentence) = CheckPutOnPointerUp?.Invoke(transform) ?? default;
 
             if (putPosition.HasValue) // はめ込める
             {
-                origin = putPosition.Value.SetZ(0);
-                transform.localPosition = origin;
+                this.putPosition = putPosition.Value.SetZ(0);
+                transform.localPosition = this.putPosition;
                 putState = state;
+                if (putSentence != null) // Sentence と一緒に動くようにする
+                {
+                    if (putSentence.FollowerWords.Exists(x => x.target == transform))
+                        putSentence.FollowerWords.Remove((transform, OnSelfWasMoved));
+                    putSentence.FollowerWords.Add((transform, OnSelfWasMoved));
+                    nowSentence = putSentence;
+                }
                 OnPut?.Invoke(putState);
             }
             else if (existed) // はめ込んであるところに、はめ込もうとした
             {
-                transform.localPosition = origin;
+                Debug.Log(nowSentence == null ? "null" : nowSentence.name);
+                transform.localPosition = this.putPosition;
             }
             else if (putState != CharacterState.None) // はめ込んでいる状態から、外す
             {
-                origin = initPosition.SetZ(0);
-                transform.localPosition = origin;
+                this.putPosition = initPosition.SetZ(0);
+                transform.localPosition = this.putPosition;
                 putState = CharacterState.Stop;
+                if (nowSentence != null) // これまでの Sentence と一緒に動いていたので、外す
+                {
+                    if (nowSentence.FollowerWords.Exists(x => x.target == transform))
+                        nowSentence.FollowerWords.Remove((transform, OnSelfWasMoved));
+                    nowSentence = null;
+                }
                 OnPut?.Invoke(putState);
             }
             else // 何もないところに、はめ込もうとした
             {
-                transform.localPosition = origin;
+                transform.localPosition = this.putPosition;
             }
+        }
+
+        private void OnSelfWasMoved(Vector3 pos)
+        {
+            // putPosition を更新
+            if (putState != CharacterState.None)
+                putPosition = pos;
         }
     }
 }
