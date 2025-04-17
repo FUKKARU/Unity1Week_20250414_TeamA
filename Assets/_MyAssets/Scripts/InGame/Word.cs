@@ -63,6 +63,8 @@ namespace NInGame
 
             (Vector3? putPosition, CharacterState state, bool existed, Sentence putSentence) = CheckPutOnPointerUp?.Invoke(transform) ?? default;
 
+            Debug.Log($"putPosition: {putPosition}, state: {state}, existed: {existed}, putSentence: {putSentence}");
+
             if (putPosition.HasValue) // はめ込める
             {
                 this.putPosition = putPosition.Value.SetZ(0);

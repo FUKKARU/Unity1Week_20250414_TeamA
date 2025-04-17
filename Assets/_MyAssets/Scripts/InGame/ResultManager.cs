@@ -24,7 +24,7 @@ namespace NInGame
             if (parent != null)
             {
                 parent.gameObject.SetActive(false);
-                parent.anchoredPosition = new Vector2(0, 10);
+                parent.anchoredPosition = new Vector2(0, 1080);
             }
         }
 

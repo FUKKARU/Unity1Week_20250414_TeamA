@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace NInGame
@@ -8,18 +9,19 @@ namespace NInGame
         [SerializeField] private Player player;
         [SerializeField] private Enemy[] enemies;
 
-        // はめ込む先のTransform
-        [SerializeField] private Transform[] walkLefts;
-        [SerializeField] private Transform[] walkRights;
-        [SerializeField] private Transform[] runLefts;
-        [SerializeField] private Transform[] runRights;
-        [SerializeField] private Transform[] jumps;
+        // はめ込む先のSentence
+        [SerializeField] private Sentence[] walkLefts;
+        [SerializeField] private Sentence[] walkRights;
+        [SerializeField] private Sentence[] runLefts;
+        [SerializeField] private Sentence[] runRights;
+        [SerializeField] private Sentence[] jumps;
 
         [SerializeField] private Word wordI;
         [SerializeField] private Word wordU;
 
         [SerializeField] private ResultManager resultManager;
 
+        [SerializeField] private bool doCameraFollowPlayer;
         [SerializeField] private bool doClearWhenAllEnemiesDied;
 
         // ゲーム開始時に、配列を結合して正規化 (はめ込めるかチェックするときに使う)
@@ -55,6 +57,9 @@ namespace NInGame
             {
                 player.OnPlayerFailed = () => OnGameEnded(false);
                 player.OnPlayerCleared = () => OnGameEnded(true);
+
+                if (doCameraFollowPlayer)
+                    Camera.main.transform.parent = player.transform;
             }
 
             InitDstData();
@@ -68,13 +73,22 @@ namespace NInGame
 
         private void InitDstData()
         {
+            // 最初の子供がパネルになっているはず
+            Func<Sentence, Transform> GetPanelTransform = (sentence) => sentence.transform.GetChild(0);
+
             CharacterState[] walkLeftsStates = MakeArray(walkLefts.Length, CharacterState.WalkLeft);
             CharacterState[] walkRightsStates = MakeArray(walkRights.Length, CharacterState.WalkRight);
             CharacterState[] runLeftsStates = MakeArray(runLefts.Length, CharacterState.RunLeft);
             CharacterState[] runRightsStates = MakeArray(runRights.Length, CharacterState.RunRight);
             CharacterState[] jumpsStates = MakeArray(jumps.Length, CharacterState.Jump);
 
-            dstTrasforms = JoinArray(walkLefts, walkRights, runLefts, runRights, jumps);
+            dstTrasforms = JoinArray(
+                FuncArray(walkLefts, GetPanelTransform),
+                FuncArray(walkRights, GetPanelTransform),
+                FuncArray(runLefts, GetPanelTransform),
+                FuncArray(runRights, GetPanelTransform),
+                FuncArray(jumps, GetPanelTransform)
+            );
             dstTypes = JoinArray(walkLeftsStates, walkRightsStates, runLeftsStates, runRightsStates, jumpsStates);
 
             static T[] MakeArray<T>(int length, T defaultValue = default)
@@ -83,6 +97,14 @@ namespace NInGame
                 for (int i = 0; i < length; i++)
                     array[i] = defaultValue;
                 return array;
+            }
+
+            static T2[] FuncArray<T1, T2>(T1[] array, Func<T1, T2> func)
+            {
+                T2[] result = new T2[array.Length];
+                for (int i = 0; i < array.Length; i++)
+                    result[i] = func(array[i]);
+                return result;
             }
 
             static T[] JoinArray<T>(params T[][] arrays)
