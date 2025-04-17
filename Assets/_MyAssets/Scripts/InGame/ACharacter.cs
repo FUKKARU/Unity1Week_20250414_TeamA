@@ -55,6 +55,25 @@ namespace NInGame
             }
             preState = NowState;
 
+            // 跳ね返された時などに、反対方向に進んで行かないようにする
+            switch (NowState)
+            {
+                case State.Walk:
+                    if (rigidbody != null && (rigidbody.linearVelocity.x > 0 != Forward.x > 0))
+                        StopMove();
+                    break;
+                case State.Run:
+                    if (rigidbody != null && (rigidbody.linearVelocity.x > 0 != Forward.x > 0))
+                        StopMove();
+                    break;
+                case State.Jump:
+                    if (rigidbody != null && rigidbody.linearVelocity.x != 0)
+                        StopMove();
+                    break;
+                default:
+                    break;
+            }
+
             AttitudeControl();
         }
 
