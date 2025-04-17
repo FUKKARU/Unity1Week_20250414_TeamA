@@ -188,9 +188,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 3770818409007079286}
+  panel: {fileID: 0}
   speed: 0.5
   startX: 13
   endX: -15
+  wordOutX: -8
 --- !u!1 &5327680828249988569
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace NInGame
@@ -12,13 +11,26 @@ namespace NInGame
         [SerializeField, Range(0.0f, 10.0f), Tooltip("移動速度 (左方向が正)")] private float speed;
         [SerializeField, Range(-30.0f, 30.0f), Tooltip("ループするとき、どこに戻すか")] private float startX;
         [SerializeField, Range(-30.0f, 30.0f), Tooltip("ループするとき、どこで戻すか")] private float endX;
+        [SerializeField, Range(-30.0f, 30.0f), Tooltip("Word を強制的に外す、境界のx座標")] private float wordOutX;
 
         // 一緒に動かすWord (外部から登録)
-        public List<(Transform target, Action<Vector3> onTargetWasMoved)> FollowerWords { get; set; } = new List<(Transform, Action<Vector3>)>();
+        public (Word target, Action<Vector3> onTargetWasMoved) FollowerWord { get; set; } = default;
 
         private void Update()
         {
             rectTransform.localPosition += Vector3.left * (speed * Time.deltaTime);
+
+            // Word を強制的に外す
+            bool doForciblyPutOut = false;
+            if (rectTransform.localPosition.x < wordOutX)
+            {
+                doForciblyPutOut = true;
+
+                if (FollowerWord.target != null)
+                    FollowerWord.target.ForciblyPutOut();
+            }
+
+            // ループする
             if (rectTransform.localPosition.x < endX)
             {
                 Vector3 pos = rectTransform.localPosition;
@@ -27,23 +39,18 @@ namespace NInGame
             }
 
             // Wordを一緒に動かす
-            foreach (var (target, onTargetWasMoved) in FollowerWords)
+            if (!doForciblyPutOut)
             {
-                if (target != null)
+                if (FollowerWord.target != null)
                 {
-                    Vector3 pos = target.position;
+                    Vector3 pos = FollowerWord.target.transform.position;
                     pos.x = panel.position.x;
                     pos.y = panel.position.y;
-                    target.position = pos;
+                    FollowerWord.target.transform.position = pos;
 
-                    onTargetWasMoved?.Invoke(pos);
+                    FollowerWord.onTargetWasMoved?.Invoke(pos);
                 }
             }
-        }
-
-        private void OnDestroy()
-        {
-            FollowerWords?.Clear();
         }
     }
 }

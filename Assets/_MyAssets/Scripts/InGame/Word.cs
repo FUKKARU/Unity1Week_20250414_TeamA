@@ -7,7 +7,7 @@ namespace NInGame
 {
     public sealed class Word : MonoBehaviour
     {
-        [SerializeField, Tooltip("Z座標を算出するときに使用")] private Canvas canvas;
+        [SerializeField] private Canvas canvas;
         [SerializeField] private Transform parent;
         [SerializeField] private new Transform transform;
         [SerializeField] private EventTrigger eventTrigger;
@@ -42,12 +42,7 @@ namespace NInGame
 
         private void Update()
         {
-            if (isFollowing)
-            {
-                Vector3 mousePosition = Input.mousePosition;
-                mousePosition.z = -0.1f;
-                transform.localPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-            }
+            FollowMouse();
         }
 
         private void OnPointerDown()
@@ -75,30 +70,19 @@ namespace NInGame
                 putState = state;
                 if (putSentence != null) // Sentence と一緒に動くようにする
                 {
-                    if (putSentence.FollowerWords.Exists(x => x.target == transform))
-                        putSentence.FollowerWords.Remove((transform, OnSelfWasMoved));
-                    putSentence.FollowerWords.Add((transform, OnSelfWasMoved));
+                    if (putSentence.FollowerWord == default)
+                        putSentence.FollowerWord = (this, OnSelfWasMoved);
                     nowSentence = putSentence;
                 }
                 OnPut?.Invoke(putState);
             }
             else if (existed) // はめ込んであるところに、はめ込もうとした
             {
-                Debug.Log(nowSentence == null ? "null" : nowSentence.name);
                 transform.localPosition = this.putPosition;
             }
             else if (putState != CharacterState.None) // はめ込んでいる状態から、外す
             {
-                this.putPosition = initPosition.SetZ(0);
-                transform.localPosition = this.putPosition;
-                putState = CharacterState.Stop;
-                if (nowSentence != null) // これまでの Sentence と一緒に動いていたので、外す
-                {
-                    if (nowSentence.FollowerWords.Exists(x => x.target == transform))
-                        nowSentence.FollowerWords.Remove((transform, OnSelfWasMoved));
-                    nowSentence = null;
-                }
-                OnPut?.Invoke(putState);
+                ForciblyPutOut();
             }
             else // 何もないところに、はめ込もうとした
             {
@@ -106,11 +90,49 @@ namespace NInGame
             }
         }
 
+        private void FollowMouse()
+        {
+            if (!isFollowing) return;
+
+            Vector3 mousePosition = Input.mousePosition.SetZ(0);
+            Vector3 pos = Camera.main.ScreenToWorldPoint(mousePosition);
+
+            // ウィンドウ内に制限
+            if (canvas != null)
+            {
+                RectTransform canvasRect = canvas.GetComponent<RectTransform>();
+                float canvasWidth = canvasRect.rect.width;
+                float canvasHeight = canvasRect.rect.height;
+                float canvasWidthHalf = canvasWidth * 0.45f; // 少し小さめに
+                float canvasHeightHalf = canvasHeight * 0.45f; // 少し小さめに
+
+                pos.x = Mathf.Clamp(pos.x, -canvasWidthHalf, canvasWidthHalf);
+                pos.y = Mathf.Clamp(pos.y, -canvasHeightHalf, canvasHeightHalf);
+            }
+
+            transform.localPosition = pos;
+        }
+
         private void OnSelfWasMoved(Vector3 pos)
         {
             // putPosition を更新
             if (putState != CharacterState.None)
                 putPosition = pos;
+        }
+
+        // 強制的に外す
+        public void ForciblyPutOut()
+        {
+            this.putPosition = initPosition.SetZ(0);
+            if (nowSentence != null) // これまでの Sentence と一緒に動いていたので、外す
+            {
+                if (nowSentence.FollowerWord != default)
+                    nowSentence.FollowerWord = default;
+                nowSentence = null;
+            }
+            transform.localPosition = this.putPosition;
+            putState = CharacterState.Stop;
+            OnPut?.Invoke(putState);
         }
     }
 }
