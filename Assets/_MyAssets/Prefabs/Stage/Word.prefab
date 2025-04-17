@@ -103,5 +103,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 0}
+  parent: {fileID: 0}
   transform: {fileID: 1746857594128589669}
   eventTrigger: {fileID: 7052223132399811051}
