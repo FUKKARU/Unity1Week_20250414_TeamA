@@ -9,6 +9,14 @@ namespace NInGame
     {
         [SerializeField] protected new Transform transform;
         [SerializeField] protected new Rigidbody2D rigidbody;
+        [SerializeField] protected Animator animator;
+
+        private static readonly int DiedHash = Animator.StringToHash("Died");
+        private static readonly int WalkLeftHash = Animator.StringToHash("WalkLeft");
+        private static readonly int WalkRightHash = Animator.StringToHash("WalkRight");
+        private static readonly int RunLeftHash = Animator.StringToHash("RunLeft");
+        private static readonly int RunRightHash = Animator.StringToHash("RunRight");
+        private static readonly int JumpHash = Animator.StringToHash("Jump");
 
         public State NowState { get; set; } = State.Stop;
         private State preState = State.Stop;
@@ -26,6 +34,8 @@ namespace NInGame
             if (transform.position.y < Param.KillY)
             {
                 hasDied = true;
+                if (animator != null)
+                    animator.SetTrigger(DiedHash);
                 OnDied();
                 return;
             }
@@ -41,18 +51,23 @@ namespace NInGame
                 {
                     case State.WalkLeft:
                         Move(-Param.WalkVelocity);
+                        SetBoolsToAnimator(State.WalkLeft);
                         break;
                     case State.WalkRight:
                         Move(Param.WalkVelocity);
+                        SetBoolsToAnimator(State.WalkRight);
                         break;
                     case State.RunLeft:
                         Move(-Param.RunVelocity);
+                        SetBoolsToAnimator(State.RunLeft);
                         break;
                     case State.RunRight:
                         Move(Param.RunVelocity);
+                        SetBoolsToAnimator(State.RunRight);
                         break;
                     case State.Jump:
                         Jump(Param.JumpForce);
+                        SetBoolsToAnimator(State.Jump);
                         break;
                     default:
                         break;
@@ -146,6 +161,17 @@ namespace NInGame
                 StopCoroutine(jumpCoroutine);
                 jumpCoroutine = null;
             }
+        }
+
+        private void SetBoolsToAnimator(State state)
+        {
+            if (animator == null) return;
+
+            animator.SetBool(WalkLeftHash, state == State.WalkLeft);
+            animator.SetBool(WalkRightHash, state == State.WalkRight);
+            animator.SetBool(RunLeftHash, state == State.RunLeft);
+            animator.SetBool(RunRightHash, state == State.RunRight);
+            animator.SetBool(JumpHash, state == State.Jump);
         }
     }
 }
