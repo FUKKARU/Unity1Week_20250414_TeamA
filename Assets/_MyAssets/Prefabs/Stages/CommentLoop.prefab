@@ -63,8 +63,8 @@ MonoBehaviour:
     weight: 0
   - message: "\u304D\u3083\u3042\u3042\u3042\u3042"
     weight: 0
-  minY: -70
-  maxY: 90
+  minY: -140
+  maxY: 240
   minSpeed: 40
   maxSpeed: 60
   spawnIntervalMin: 0.5

@@ -18,14 +18,14 @@ public class FloatingComment : MonoBehaviour
     {
         this.speed = speed;
         GetComponent<TextMeshProUGUI>().text = message;
-        rectTransform.anchoredPosition = new Vector2(screenWidth + 100, yPosition);
+        rectTransform.anchoredPosition = new Vector2(screenWidth-200 , yPosition);
     }
 
     void Update()
     {
         rectTransform.anchoredPosition += Vector2.left * speed * Time.deltaTime;
 
-        if (rectTransform.anchoredPosition.x < -screenWidth -0)
+        if (rectTransform.anchoredPosition.x < -screenWidth +100)
         {
             Destroy(gameObject);
         }

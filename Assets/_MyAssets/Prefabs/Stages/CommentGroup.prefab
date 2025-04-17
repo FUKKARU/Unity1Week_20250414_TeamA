@@ -63,8 +63,8 @@ MonoBehaviour:
     spawnCount: 1
   - message: "('\u03C9')\u30CE"
     spawnCount: 1
-  minY: -70
-  maxY: 90
+  minY: -140
+  maxY: 240
   minSpeed: 40
   maxSpeed: 60
   spawnDelayMin: 0
