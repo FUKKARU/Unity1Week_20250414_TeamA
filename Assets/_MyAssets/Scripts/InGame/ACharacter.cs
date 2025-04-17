@@ -39,13 +39,18 @@ namespace NInGame
 
                 switch (NowState)
                 {
-                    case State.Walk:
+                    case State.WalkLeft:
+                        Move(-Param.WalkVelocity);
+                        break;
+                    case State.WalkRight:
                         Move(Param.WalkVelocity);
                         break;
-                    case State.Run:
+                    case State.RunLeft:
+                        Move(-Param.RunVelocity);
+                        break;
+                    case State.RunRight:
                         Move(Param.RunVelocity);
                         break;
-
                     case State.Jump:
                         Jump(Param.JumpForce);
                         break;
@@ -58,12 +63,12 @@ namespace NInGame
             // 跳ね返された時などに、反対方向に進んで行かないようにする
             switch (NowState)
             {
-                case State.Walk:
-                    if (rigidbody != null && (rigidbody.linearVelocity.x > 0 != Forward.x > 0))
+                case State.WalkLeft or State.RunLeft:
+                    if (rigidbody != null && rigidbody.linearVelocity.x > 0)
                         StopMove();
                     break;
-                case State.Run:
-                    if (rigidbody != null && (rigidbody.linearVelocity.x > 0 != Forward.x > 0))
+                case State.WalkRight or State.RunRight:
+                    if (rigidbody != null && rigidbody.linearVelocity.x < 0)
                         StopMove();
                     break;
                 case State.Jump:

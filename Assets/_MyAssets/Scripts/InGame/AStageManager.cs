@@ -9,8 +9,10 @@ namespace NInGame
         [SerializeField] private Enemy[] enemies;
 
         // はめ込む先のTransform
-        [SerializeField] private Transform[] walks;
-        [SerializeField] private Transform[] runs;
+        [SerializeField] private Transform[] walkLefts;
+        [SerializeField] private Transform[] walkRights;
+        [SerializeField] private Transform[] runLefts;
+        [SerializeField] private Transform[] runRights;
         [SerializeField] private Transform[] jumps;
 
         [SerializeField] private Word wordI;
@@ -66,29 +68,38 @@ namespace NInGame
 
         private void InitDstData()
         {
-            int walkLen = walks.Length;
-            int runLen = runs.Length;
-            int jumpLen = jumps.Length;
+            CharacterState[] walkLeftsStates = MakeArray(walkLefts.Length, CharacterState.WalkLeft);
+            CharacterState[] walkRightsStates = MakeArray(walkRights.Length, CharacterState.WalkRight);
+            CharacterState[] runLeftsStates = MakeArray(runLefts.Length, CharacterState.RunLeft);
+            CharacterState[] runRightsStates = MakeArray(runRights.Length, CharacterState.RunRight);
+            CharacterState[] jumpsStates = MakeArray(jumps.Length, CharacterState.Jump);
 
-            CharacterState[] walkStates = new CharacterState[walkLen];
-            for (int i = 0; i < walkLen; i++)
-                walkStates[i] = CharacterState.Walk;
-            CharacterState[] runStates = new CharacterState[runLen];
-            for (int i = 0; i < runLen; i++)
-                runStates[i] = CharacterState.Run;
-            CharacterState[] jumpStates = new CharacterState[jumpLen];
-            for (int i = 0; i < jumpLen; i++)
-                jumpStates[i] = CharacterState.Jump;
+            dstTrasforms = JoinArray(walkLefts, walkRights, runLefts, runRights, jumps);
+            dstTypes = JoinArray(walkLeftsStates, walkRightsStates, runLeftsStates, runRightsStates, jumpsStates);
 
-            dstTrasforms = new Transform[walkLen + runLen + jumpLen];
-            Array.Copy(walks, 0, dstTrasforms, 0, walkLen);
-            Array.Copy(runs, 0, dstTrasforms, walkLen, runLen);
-            Array.Copy(jumps, 0, dstTrasforms, walkLen + runLen, jumpLen);
+            static T[] MakeArray<T>(int length, T defaultValue = default)
+            {
+                T[] array = new T[length];
+                for (int i = 0; i < length; i++)
+                    array[i] = defaultValue;
+                return array;
+            }
 
-            dstTypes = new CharacterState[walkLen + runLen + jumpLen];
-            Array.Copy(walkStates, 0, dstTypes, 0, walkLen);
-            Array.Copy(runStates, 0, dstTypes, walkLen, runLen);
-            Array.Copy(jumpStates, 0, dstTypes, walkLen + runLen, jumpLen);
+            static T[] JoinArray<T>(params T[][] arrays)
+            {
+                int totalLength = 0;
+                foreach (T[] array in arrays)
+                    totalLength += array.Length;
+
+                T[] result = new T[totalLength];
+                int offset = 0;
+                foreach (T[] array in arrays)
+                {
+                    Array.Copy(array, 0, result, offset, array.Length);
+                    offset += array.Length;
+                }
+                return result;
+            }
         }
 
         // 重なっているなら、はめ込める

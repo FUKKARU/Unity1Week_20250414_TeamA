@@ -4,8 +4,10 @@ namespace NInGame
     {
         None,
         Stop,
-        Walk,
-        Run,
+        WalkLeft,
+        WalkRight,
+        RunLeft,
+        RunRight,
         Jump,
     }
 }
