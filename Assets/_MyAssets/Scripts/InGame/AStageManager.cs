@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace NInGame
@@ -7,15 +8,19 @@ namespace NInGame
         [SerializeField] private Player player;
         [SerializeField] private Enemy[] enemies;
 
-        // nullでも良い、はめ込む先のTransform
-        [SerializeField] private Transform walk;
-        [SerializeField] private Transform run;
-        [SerializeField] private Transform jump;
+        // はめ込む先のTransform
+        [SerializeField] private Transform[] walks;
+        [SerializeField] private Transform[] runs;
+        [SerializeField] private Transform[] jumps;
 
         [SerializeField] private Word wordI;
         [SerializeField] private Word wordU;
 
         [SerializeField] private ResultManager resultManager;
+
+        // ゲーム開始時に、配列を結合して正規化 (はめ込めるかチェックするときに使う)
+        private Transform[] dstTrasforms;
+        private CharacterState[] dstTypes;
 
         private bool hasAllEnemiesDied = false;
 
@@ -47,6 +52,8 @@ namespace NInGame
                 player.OnPlayerFailed = () => OnGameEnded(false);
                 player.OnPlayerCleared = () => OnGameEnded(true);
             }
+
+            InitDstData();
         }
 
         private void Update()
@@ -54,14 +61,38 @@ namespace NInGame
             CheckEnemiesDied();
         }
 
+        private void InitDstData()
+        {
+            int walkLen = walks.Length;
+            int runLen = runs.Length;
+            int jumpLen = jumps.Length;
+
+            CharacterState[] walkStates = new CharacterState[walkLen];
+            for (int i = 0; i < walkLen; i++)
+                walkStates[i] = CharacterState.Walk;
+            CharacterState[] runStates = new CharacterState[runLen];
+            for (int i = 0; i < runLen; i++)
+                runStates[i] = CharacterState.Run;
+            CharacterState[] jumpStates = new CharacterState[jumpLen];
+            for (int i = 0; i < jumpLen; i++)
+                jumpStates[i] = CharacterState.Jump;
+
+            dstTrasforms = new Transform[walkLen + runLen + jumpLen];
+            Array.Copy(walks, 0, dstTrasforms, 0, walkLen);
+            Array.Copy(runs, 0, dstTrasforms, walkLen, runLen);
+            Array.Copy(jumps, 0, dstTrasforms, walkLen + runLen, jumpLen);
+
+            dstTypes = new CharacterState[walkLen + runLen + jumpLen];
+            Array.Copy(walkStates, 0, dstTypes, 0, walkLen);
+            Array.Copy(runStates, 0, dstTypes, walkLen, runLen);
+            Array.Copy(jumpStates, 0, dstTypes, walkLen + runLen, jumpLen);
+        }
+
         // 重なっているなら、はめ込める
         // はめ込む座標（無理ならnull）、はめ込み先の種類、既にはめ込んであって無理だったか
         private (Vector3?, CharacterState, bool) CheckPutOnPointerUp(Transform src)
         {
             if (src == null) return default;
-
-            Transform[] dstTrasforms = { walk, run, jump };
-            CharacterState[] dstTypes = { CharacterState.Walk, CharacterState.Run, CharacterState.Jump };
 
             for (int i = 0; i < dstTrasforms.Length; i++)
             {
