@@ -18,6 +18,8 @@ namespace NInGame
 
         [SerializeField] private ResultManager resultManager;
 
+        [SerializeField] private bool doClearWhenAllEnemiesDied;
+
         // ゲーム開始時に、配列を結合して正規化 (はめ込めるかチェックするときに使う)
         private Transform[] dstTrasforms;
         private CharacterState[] dstTypes;
@@ -58,7 +60,8 @@ namespace NInGame
 
         private void Update()
         {
-            CheckEnemiesDied();
+            if (doClearWhenAllEnemiesDied)
+                CheckEnemiesDied();
         }
 
         private void InitDstData()
@@ -89,8 +92,8 @@ namespace NInGame
         }
 
         // 重なっているなら、はめ込める
-        // はめ込む座標（無理ならnull）、はめ込み先の種類、既にはめ込んであって無理だったか
-        private (Vector3?, CharacterState, bool) CheckPutOnPointerUp(Transform src)
+        // はめ込む座標（無理ならnull）、はめ込み先の種類、既にはめ込んであって無理だったか、はめ込むSentence(パネルの親である想定) を返す
+        private (Vector3?, CharacterState, bool, Sentence) CheckPutOnPointerUp(Transform src)
         {
             if (src == null) return default;
 
@@ -124,10 +127,10 @@ namespace NInGame
                     {
                         if (word == null) continue;
                         if (word.Position == (Vector2)dst.position)
-                            return (null, CharacterState.None, true);
+                            return (null, CharacterState.None, true, null);
                     }
 
-                    return (dstPos, dstTypes[i], false);
+                    return (dstPos, dstTypes[i], false, dstTrasforms[i].parent.GetComponent<Sentence>());
                 }
             }
 
