@@ -123,7 +123,7 @@ namespace NInGame
                     foreach (Word word in words)
                     {
                         if (word == null) continue;
-                        if ((Vector2)word.Position == (Vector2)dst.position)
+                        if (word.Position == (Vector2)dst.position)
                             return (null, CharacterState.None, true);
                     }
 

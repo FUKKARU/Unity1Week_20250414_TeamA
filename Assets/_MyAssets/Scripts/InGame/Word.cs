@@ -7,6 +7,8 @@ namespace NInGame
 {
     public sealed class Word : MonoBehaviour
     {
+        [SerializeField, Tooltip("Z座標を算出するときに使用")] private Canvas canvas;
+        [SerializeField] private Transform parent;
         [SerializeField] private new Transform transform;
         [SerializeField] private EventTrigger eventTrigger;
 
@@ -17,7 +19,7 @@ namespace NInGame
         // どこに嵌め込まれているかを保存
         private CharacterState putState = CharacterState.None;
 
-        public Vector3 Position => transform.position;
+        public Vector2 Position => transform.localPosition;
 
         // 単語をはめ込めるか調べ、はめ込めるならその座標を、はめ込めないならnullを返す
         // はめ込んだものの種類も返す
@@ -28,8 +30,8 @@ namespace NInGame
 
         private void Start()
         {
-            initPosition = transform.position;
-            origin = transform.position;
+            initPosition = transform.localPosition;
+            origin = transform.localPosition;
 
             if (eventTrigger != null)
             {
@@ -43,14 +45,21 @@ namespace NInGame
             if (isFollowing)
             {
                 Vector3 mousePosition = Input.mousePosition;
-                mousePosition.z = 10.0f; // カメラからの距離
-                transform.position = Camera.main.ScreenToWorldPoint(mousePosition);
+                mousePosition.z = -0.1f;
+                transform.localPosition = Camera.main.ScreenToWorldPoint(mousePosition);
             }
         }
 
         private void OnPointerDown()
         {
             isFollowing = true;
+
+            // つかんだ瞬間、最後の子にする
+            if (transform != null && parent != null)
+            {
+                transform.SetParent(parent);
+                transform.SetAsLastSibling();
+            }
         }
 
         private void OnPointerUp()
@@ -61,25 +70,25 @@ namespace NInGame
 
             if (putPosition.HasValue) // はめ込める
             {
-                origin = putPosition.Value.SetZ(10);
-                transform.position = origin;
+                origin = putPosition.Value.SetZ(0);
+                transform.localPosition = origin;
                 putState = state;
                 OnPut?.Invoke(putState);
             }
             else if (existed) // はめ込んであるところに、はめ込もうとした
             {
-                transform.position = origin;
+                transform.localPosition = origin;
             }
             else if (putState != CharacterState.None) // はめ込んでいる状態から、外す
             {
-                origin = initPosition.SetZ(10);
-                transform.position = origin;
+                origin = initPosition.SetZ(0);
+                transform.localPosition = origin;
                 putState = CharacterState.Stop;
                 OnPut?.Invoke(putState);
             }
             else // 何もないところに、はめ込もうとした
             {
-                transform.position = origin;
+                transform.localPosition = origin;
             }
         }
     }
