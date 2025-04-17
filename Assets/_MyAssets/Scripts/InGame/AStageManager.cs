@@ -148,7 +148,7 @@ namespace NInGame
             }
 
             hasAllEnemiesDied = true;
-            OnGameEnded(false);
+            OnGameEnded(true);
         }
 
         private void OnGameEnded(bool cleared)
