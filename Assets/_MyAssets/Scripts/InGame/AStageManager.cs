@@ -18,6 +18,8 @@ namespace NInGame
 
         [SerializeField] private ResultManager resultManager;
 
+        [SerializeField] private bool doClearWhenAllEnemiesDied;
+
         // ゲーム開始時に、配列を結合して正規化 (はめ込めるかチェックするときに使う)
         private Transform[] dstTrasforms;
         private CharacterState[] dstTypes;
@@ -58,7 +60,8 @@ namespace NInGame
 
         private void Update()
         {
-            CheckEnemiesDied();
+            if (doClearWhenAllEnemiesDied)
+                CheckEnemiesDied();
         }
 
         private void InitDstData()
