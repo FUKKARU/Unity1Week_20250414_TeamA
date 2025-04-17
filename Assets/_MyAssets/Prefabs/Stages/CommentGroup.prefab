@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8219713120548600164
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8962210542930472188}
+  - component: {fileID: 2675124750206525335}
+  m_Layer: 5
+  m_Name: CommentGroup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8962210542930472188
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8219713120548600164}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2675124750206525335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8219713120548600164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc6b77beddd7c1b438dd115d85af596a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  commentPrefab: {fileID: 344973462598740432, guid: ae338a88baa48834e9b6e09733474227, type: 3}
+  parentCanvas: {fileID: 0}
+  commentGroup:
+  - message: "\u8349"
+    spawnCount: 5
+  - message: "\u306F\u3058\u307E\u3063\u305F\uFF01"
+    spawnCount: 2
+  - message: "\u306A\u306B\u3053\u308C"
+    spawnCount: 1
+  - message: "\u898B\u3048\u3066\u308B\uFF1F"
+    spawnCount: 2
+  - message: "\u3053\u3093\u306B\u3061\u306F\u30FC"
+    spawnCount: 1
+  - message: "('\u03C9')\u30CE"
+    spawnCount: 1
+  minY: -70
+  maxY: 90
+  minSpeed: 40
+  maxSpeed: 60
+  spawnDelayMin: 0
+  spawnDelayMax: 1

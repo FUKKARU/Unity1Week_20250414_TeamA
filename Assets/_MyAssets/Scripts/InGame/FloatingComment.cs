@@ -1,0 +1,33 @@
+using UnityEngine;
+using TMPro;
+
+public class FloatingComment : MonoBehaviour
+{
+    public float speed = 100f;
+
+    private RectTransform rectTransform;
+    private float screenWidth;
+
+    void Awake()
+    {
+        rectTransform = GetComponent<RectTransform>();
+        screenWidth = Screen.width;
+    }
+
+    public void Init(string message, float speed, float yPosition)
+    {
+        this.speed = speed;
+        GetComponent<TextMeshProUGUI>().text = message;
+        rectTransform.anchoredPosition = new Vector2(screenWidth + 100, yPosition);
+    }
+
+    void Update()
+    {
+        rectTransform.anchoredPosition += Vector2.left * speed * Time.deltaTime;
+
+        if (rectTransform.anchoredPosition.x < -screenWidth -0)
+        {
+            Destroy(gameObject);
+        }
+    }
+}
