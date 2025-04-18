@@ -4,6 +4,10 @@ namespace NInGame
     {
         public bool Died { get; private set; } = false;
 
-        protected override void OnDied() => Died |= true;
+        protected override void OnDied()
+        {
+            Died |= true;
+            base.OnDied();
+        }
     }
 }

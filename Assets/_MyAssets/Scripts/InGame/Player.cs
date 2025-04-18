@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace NInGame
@@ -10,7 +11,11 @@ namespace NInGame
 
         private static readonly int ClearedHash = Animator.StringToHash("Cleared");
 
-        protected override void OnDied() => OnPlayerFailed?.Invoke();
+        protected override void OnDied()
+        {
+            OnPlayerFailed?.Invoke();
+            base.OnDied();
+        }
 
         private void OnCollisionEnter2D(Collision2D collision)
         {

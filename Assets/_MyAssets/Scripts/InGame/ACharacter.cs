@@ -8,6 +8,7 @@ namespace NInGame
     public abstract class ACharacter : MonoBehaviour
     {
         [SerializeField] protected new Transform transform;
+        [SerializeField] protected new Collider2D collider;
         [SerializeField] protected new Rigidbody2D rigidbody;
         [SerializeField] protected Animator animator;
 
@@ -22,7 +23,22 @@ namespace NInGame
         private State preState = State.Stop;
 
         protected virtual Vector3 Forward => transform.right;
-        protected virtual void OnDied() { }
+        protected virtual void OnDied()
+        {
+            StartCoroutine(DisableSelf());
+
+            IEnumerator DisableSelf()
+            {
+                yield return new WaitForSeconds(Param.DisableIntervalOnDied);
+
+                if (collider != null)
+                    collider.enabled = enabled;
+                if (rigidbody != null)
+                    rigidbody.simulated = enabled;
+                if (animator != null)
+                    animator.enabled = enabled;
+            }
+        }
 
         private bool hasDied = false;
         private Coroutine jumpCoroutine = null;

@@ -168,6 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transform: {fileID: 2355691646399985475}
+  collider: {fileID: 3536270232212623044}
   rigidbody: {fileID: 331886546709128248}
   animator: {fileID: 701158683191109140}
 --- !u!95 &701158683191109140
