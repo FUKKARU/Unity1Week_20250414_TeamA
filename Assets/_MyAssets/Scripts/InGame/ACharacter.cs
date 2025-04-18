@@ -12,6 +12,7 @@ namespace NInGame
         [SerializeField] protected new Collider2D collider;
         [SerializeField] protected new Rigidbody2D rigidbody;
         [SerializeField] protected Animator animator;
+        [SerializeField] protected SpriteRenderer spriteRenderer;
 
         private static readonly int DiedHash = Animator.StringToHash("Died");
         private static readonly int WalkLeftHash = Animator.StringToHash("WalkLeft");
@@ -34,11 +35,13 @@ namespace NInGame
                 yield return new WaitForSecondsRealtime(Param.DisableIntervalOnDied);
 
                 if (collider != null)
-                    collider.enabled = enabled;
+                    collider.enabled = false;
                 if (rigidbody != null)
-                    rigidbody.simulated = enabled;
+                    rigidbody.simulated = false;
                 if (animator != null)
-                    animator.enabled = enabled;
+                    animator.enabled = false;
+                if (spriteRenderer != null)
+                    spriteRenderer.enabled = false;
             }
         }
 

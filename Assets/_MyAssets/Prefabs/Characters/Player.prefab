@@ -171,6 +171,7 @@ MonoBehaviour:
   collider: {fileID: 3536270232212623044}
   rigidbody: {fileID: 331886546709128248}
   animator: {fileID: 701158683191109140}
+  spriteRenderer: {fileID: 7162250661814515881}
 --- !u!95 &701158683191109140
 Animator:
   serializedVersion: 7
