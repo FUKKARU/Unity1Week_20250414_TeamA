@@ -394,6 +394,8 @@ MonoBehaviour:
   - {fileID: 709128749}
   wordI: {fileID: 1694327851}
   wordU: {fileID: 1694327850}
+  worldSpaceCanvases:
+  - {fileID: 1036686463}
   resultManager: {fileID: 108961927}
   doCameraFollowPlayer: 0
   doClearWhenAllEnemiesDied: 0

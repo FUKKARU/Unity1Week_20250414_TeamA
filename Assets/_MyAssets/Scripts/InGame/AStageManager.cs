@@ -18,6 +18,8 @@ namespace NInGame
         [SerializeField] private Word wordI;
         [SerializeField] private Word wordU;
 
+        [SerializeField] private Canvas[] worldSpaceCanvases;
+
         [SerializeField] private ResultManager resultManager;
 
         [SerializeField] private bool doCameraFollowPlayer;
@@ -58,7 +60,15 @@ namespace NInGame
                 player.OnPlayerCleared = () => OnGameEnded(true);
 
                 if (doCameraFollowPlayer)
+                {
                     Camera.main.transform.parent = player.transform;
+
+                    foreach (Canvas canvas in worldSpaceCanvases)
+                    {
+                        if (canvas != null)
+                            canvas.transform.parent = player.transform;
+                    }
+                }
             }
 
             InitDstData();
