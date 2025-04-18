@@ -2,6 +2,7 @@ using UnityEngine;
 using State = NInGame.CharacterState;
 using Param = NInGame.CharacterParameters;
 using System.Collections;
+using NScriptableObject;
 
 namespace NInGame
 {
@@ -25,6 +26,7 @@ namespace NInGame
         protected virtual Vector3 Forward => transform.right;
         protected virtual void OnDied()
         {
+            AudioManager.Instance.DoPlay(SSound.Entity.SE.Died, AudioManager.AudioType.SE);
             StartCoroutine(DisableSelf());
 
             IEnumerator DisableSelf()
