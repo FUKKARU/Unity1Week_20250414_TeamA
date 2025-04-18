@@ -54,13 +54,13 @@ MonoBehaviour:
   - message: "\u8349"
     spawnCount: 5
   - message: "\u306F\u3058\u307E\u3063\u305F\uFF01"
-    spawnCount: 2
+    spawnCount: 1
   - message: "\u306A\u306B\u3053\u308C"
     spawnCount: 1
   - message: "\u898B\u3048\u3066\u308B\uFF1F"
-    spawnCount: 2
-  - message: "\u3053\u3093\u306B\u3061\u306F\u30FC"
     spawnCount: 1
+  - message: "\u3053\u3093\u306B\u3061\u306F\u30FC"
+    spawnCount: 2
   - message: "('\u03C9')\u30CE"
     spawnCount: 1
   minY: -140

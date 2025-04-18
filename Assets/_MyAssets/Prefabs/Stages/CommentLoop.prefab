@@ -63,6 +63,18 @@ MonoBehaviour:
     weight: 0
   - message: "\u304D\u3083\u3042\u3042\u3042\u3042"
     weight: 0
+  - message: "\u3048\u3063"
+    weight: 0
+  - message: "\u305D\u3053\u53F3"
+    weight: 0
+  - message: "\u3046\u3063\u307E"
+    weight: 0
+  - message: "\u8AB0\u3067\u3059\u304B\uFF1F"
+    weight: 0
+  - message: wwwwwww
+    weight: 0
+  - message: www
+    weight: 0
   minY: -140
   maxY: 240
   minSpeed: 40
