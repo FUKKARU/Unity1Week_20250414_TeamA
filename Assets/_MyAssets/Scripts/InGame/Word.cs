@@ -107,24 +107,24 @@ namespace NInGame
         {
             if (!isFollowing) return;
 
-            Vector3 mousePosition = Input.mousePosition.SetZ(0);
-            mousePosition -= (Vector3)canvasPositionOnStart; // ???
-            Vector3 pos = Camera.main.ScreenToWorldPoint(mousePosition);
+            Vector2 localPoint;
+            RectTransform canvasRect = canvas.GetComponent<RectTransform>();
+            Vector2 screenPosition = Input.mousePosition;
 
-            // ウィンドウ内に制限
-            if (canvas != null)
+            // スクリーン座標をキャンバスのローカル座標に変換
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPosition, Camera.main, out localPoint))
             {
-                RectTransform canvasRect = canvas.GetComponent<RectTransform>();
-                float canvasWidth = canvasRect.rect.width;
-                float canvasHeight = canvasRect.rect.height;
-                float canvasWidthHalf = canvasWidth * 0.45f; // 少し小さめに
-                float canvasHeightHalf = canvasHeight * 0.45f; // 少し小さめに
+                Vector3 pos = localPoint;
+
+                // ウィンドウ内に制限
+                float canvasWidthHalf = canvasRect.rect.width * 0.45f;
+                float canvasHeightHalf = canvasRect.rect.height * 0.45f;
 
                 pos.x = Mathf.Clamp(pos.x, -canvasWidthHalf, canvasWidthHalf);
                 pos.y = Mathf.Clamp(pos.y, -canvasHeightHalf, canvasHeightHalf);
-            }
 
-            transform.localPosition = pos;
+                transform.localPosition = pos;
+            }
         }
 
         private void OnSelfWasMoved(Vector3 pos)
