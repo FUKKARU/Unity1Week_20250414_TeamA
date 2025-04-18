@@ -61,12 +61,12 @@ namespace NInGame
 
                 if (doCameraFollowPlayer)
                 {
-                    Camera.main.transform.parent = player.transform;
+                    Camera.main.transform.SetParent(player.transform);
 
                     foreach (Canvas canvas in worldSpaceCanvases)
                     {
                         if (canvas != null)
-                            canvas.transform.parent = player.transform;
+                            canvas.transform.SetParent(player.transform);
                     }
                 }
             }

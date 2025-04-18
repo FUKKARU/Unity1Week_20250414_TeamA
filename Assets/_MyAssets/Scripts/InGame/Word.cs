@@ -31,10 +31,16 @@ namespace NInGame
         // クリックされる前の、Sentence にバインドしていたかの情報を保存
         private bool bindedBeforePointerDown = false;
 
+        // ゲーム開始時の、Canvasの座標を保存
+        private Vector2 canvasPositionOnStart = Vector2.zero;
+
         private void Start()
         {
             initPosition = transform.localPosition;
             putPosition = initPosition;
+
+            if (canvas != null)
+                canvasPositionOnStart = canvas.transform.position;
 
             if (eventTrigger != null)
             {
@@ -102,6 +108,7 @@ namespace NInGame
             if (!isFollowing) return;
 
             Vector3 mousePosition = Input.mousePosition.SetZ(0);
+            mousePosition -= (Vector3)canvasPositionOnStart; // ???
             Vector3 pos = Camera.main.ScreenToWorldPoint(mousePosition);
 
             // ウィンドウ内に制限
