@@ -1,8 +1,8 @@
+using System.Collections;
 using UnityEngine;
+using NScriptableObject;
 using State = NInGame.CharacterState;
 using Param = NInGame.CharacterParameters;
-using System.Collections;
-using NScriptableObject;
 
 namespace NInGame
 {

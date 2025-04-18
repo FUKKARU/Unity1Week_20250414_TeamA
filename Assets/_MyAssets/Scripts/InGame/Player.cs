@@ -1,6 +1,6 @@
 using System;
-using System.Collections;
 using UnityEngine;
+using NScriptableObject;
 
 namespace NInGame
 {
@@ -28,6 +28,7 @@ namespace NInGame
         {
             if (collision.CompareTag("stage/goal"))
             {
+                AudioManager.Instance.DoPlay(SSound.Entity.SE.Cleared, AudioManager.AudioType.SE);
                 if (animator != null)
                     animator.SetBool(ClearedHash, true);
                 OnPlayerCleared?.Invoke();

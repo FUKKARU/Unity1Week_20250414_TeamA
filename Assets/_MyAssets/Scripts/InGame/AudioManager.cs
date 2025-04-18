@@ -1,7 +1,7 @@
-using NGeneral;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
+using NGeneral;
 
 namespace NInGame
 {
