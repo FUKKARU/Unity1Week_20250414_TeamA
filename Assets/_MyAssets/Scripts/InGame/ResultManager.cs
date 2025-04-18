@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using Text = TMPro.TextMeshProUGUI;
 using NGeneral;
+using System.Collections;
 
 namespace NInGame
 {
@@ -33,6 +34,8 @@ namespace NInGame
             if (isShowing) return;
             isShowing = true;
 
+            Time.timeScale = 0f;
+
             if (cleared)
             {
                 if (text != null)
@@ -62,17 +65,22 @@ namespace NInGame
                     backButton.onClick.AddListener(() => OnLoadSceneButtonClicked(Scene.StageSelect));
             }
 
-            if (parent != null)
+            StartCoroutine(DoResultTween());
+
+            IEnumerator DoResultTween()
             {
+                yield return new WaitForSecondsRealtime(CharacterParameters.ResultIntervalOnCleared);
+
+                if (parent == null) yield break;
+
                 parent.gameObject.SetActive(true);
                 parent.DOAnchorPosY(0, 0.5f)
                     .SetEase(Ease.OutBack)
+                    .SetUpdate(true)
                     .OnComplete(() =>
                     {
                         if (frontBlockingImage != null)
                             frontBlockingImage.gameObject.SetActive(false);
-
-                        Time.timeScale = 0f;
                     });
             }
         }
