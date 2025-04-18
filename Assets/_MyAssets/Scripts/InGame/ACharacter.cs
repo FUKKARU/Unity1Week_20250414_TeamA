@@ -96,6 +96,10 @@ namespace NInGame
             // 跳ね返された時などに、反対方向に進んで行かないようにする
             switch (NowState)
             {
+                case State.Stop:
+                    if (rigidbody != null && rigidbody.linearVelocity != Vector2.zero)
+                        StopMove();
+                    break;
                 case State.WalkLeft or State.RunLeft:
                     if (rigidbody != null && rigidbody.linearVelocity.x > 0)
                         StopMove();
