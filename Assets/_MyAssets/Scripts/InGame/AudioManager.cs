@@ -24,24 +24,29 @@ namespace NInGame
         private static readonly float MinVolume = -20f;
         private static readonly float MaxVolume = 20f;
         private static readonly int MinSliderValue = 0;
-        private static readonly int MaxSliderValue = 9;
+        private static readonly int MaxSliderValue = 10;
 
         private void Start()
         {
             if (bgmVolumeSlider != null)
             {
                 GetVolume(AudioType.BGM, out float volume);
-                bgmVolumeSlider.value = volume.Remap(MinVolume, MaxVolume, MinSliderValue, MaxSliderValue);
-                bgmVolumeSlider.onValueChanged.AddListener((value) => SetVolume(AudioType.BGM, value.Remap(MinSliderValue, MaxSliderValue, MinVolume, MaxVolume)));
+                bgmVolumeSlider.value = Volume2SliderValue(volume);
+                bgmVolumeSlider.onValueChanged.AddListener((value) => SetVolume(AudioType.BGM, SliderValue2Volume(value)));
             }
 
             if (seVolumeSlider != null)
             {
                 GetVolume(AudioType.SE, out float volume);
-                seVolumeSlider.value = volume.Remap(MinVolume, MaxVolume, MinSliderValue, MaxSliderValue);
-                seVolumeSlider.onValueChanged.AddListener((value) => SetVolume(AudioType.SE, value.Remap(MinSliderValue, MaxSliderValue, MinVolume, MaxVolume)));
+                seVolumeSlider.value = Volume2SliderValue(volume);
+                seVolumeSlider.onValueChanged.AddListener((value) => SetVolume(AudioType.SE, SliderValue2Volume(value)));
             }
         }
+
+        private float SliderValue2Volume(float sliderValue) =>
+            Mathf.Round(sliderValue.Remap(MinSliderValue, MaxSliderValue, MinVolume, MaxVolume));
+        private int Volume2SliderValue(float volume) =>
+            Mathf.RoundToInt(volume.Remap(MinVolume, MaxVolume, MinSliderValue, MaxSliderValue));
 
         public void DoPlay(AudioClip audioClip, AudioType audioType)
         {
