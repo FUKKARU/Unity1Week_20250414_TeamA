@@ -437,8 +437,8 @@ MonoBehaviour:
   runRights: []
   jumps:
   - {fileID: 385131931}
-  wordI: {fileID: 0}
-  wordU: {fileID: 0}
+  wordI: {fileID: 995221040}
+  wordU: {fileID: 995221039}
   resultManager: {fileID: 639301163833753873, guid: 6bbc86a4f75f449b59b31fdeda66f0de, type: 3}
   doCameraFollowPlayer: 0
   doClearWhenAllEnemiesDied: 0
@@ -928,6 +928,28 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4754911092391090307, guid: 4507bd05b63264082afb78613c46fba9, type: 3}
   m_PrefabInstance: {fileID: 995221037}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &995221039 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5283876580437487637, guid: 4507bd05b63264082afb78613c46fba9, type: 3}
+  m_PrefabInstance: {fileID: 995221037}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 811931ede6e524170be3880da76efe9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &995221040 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8292828700323465690, guid: 4507bd05b63264082afb78613c46fba9, type: 3}
+  m_PrefabInstance: {fileID: 995221037}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 811931ede6e524170be3880da76efe9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1036686460
 GameObject:
   m_ObjectHideFlags: 0

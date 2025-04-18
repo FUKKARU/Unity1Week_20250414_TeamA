@@ -28,6 +28,9 @@ namespace NInGame
         // はめ込んだ際に実行する
         public Action<CharacterState> OnPut { get; set; } = null;
 
+        // クリックされる前の、Sentence にバインドしていたかの情報を保存
+        private bool bindedBeforePointerDown = false;
+
         private void Start()
         {
             initPosition = transform.localPosition;
@@ -49,6 +52,9 @@ namespace NInGame
         {
             isFollowing = true;
 
+            bindedBeforePointerDown = GetBindedAsFollower();
+            SetBindedAsFollower(false);
+
             // つかんだ瞬間、最後の子にする
             if (transform != null && parent != null)
             {
@@ -63,8 +69,6 @@ namespace NInGame
 
             (Vector3? putPosition, CharacterState state, bool existed, Sentence putSentence) = CheckPutOnPointerUp?.Invoke(transform) ?? default;
 
-            Debug.Log($"putPosition: {putPosition}, state: {state}, existed: {existed}, putSentence: {putSentence}");
-
             if (putPosition.HasValue) // はめ込める
             {
                 this.putPosition = putPosition.Value.SetZ(0);
@@ -72,15 +76,15 @@ namespace NInGame
                 putState = state;
                 if (putSentence != null) // Sentence と一緒に動くようにする
                 {
-                    if (putSentence.FollowerWord == default)
-                        putSentence.FollowerWord = (this, OnSelfWasMoved);
                     nowSentence = putSentence;
+                    SetBindedAsFollower(true);
                 }
                 OnPut?.Invoke(putState);
             }
             else if (existed) // はめ込んであるところに、はめ込もうとした
             {
                 transform.localPosition = this.putPosition;
+                SetBindedAsFollower(bindedBeforePointerDown); // つかんでいたときの状態に戻す
             }
             else if (putState != CharacterState.None) // はめ込んでいる状態から、外す
             {
@@ -89,6 +93,7 @@ namespace NInGame
             else // 何もないところに、はめ込もうとした
             {
                 transform.localPosition = this.putPosition;
+                SetBindedAsFollower(bindedBeforePointerDown); // つかんでいたときの状態に戻す
             }
         }
 
@@ -126,15 +131,33 @@ namespace NInGame
         public void ForciblyPutOut()
         {
             this.putPosition = initPosition.SetZ(0);
-            if (nowSentence != null) // これまでの Sentence と一緒に動いていたので、外す
-            {
-                if (nowSentence.FollowerWord != default)
-                    nowSentence.FollowerWord = default;
-                nowSentence = null;
-            }
+            SetBindedAsFollower(false); // これまでの Sentence と一緒に動いていたので、外す
+            nowSentence = null;
             transform.localPosition = this.putPosition;
             putState = CharacterState.Stop;
             OnPut?.Invoke(putState);
+        }
+
+        private bool GetBindedAsFollower()
+        {
+            if (nowSentence == null) return false;
+            return nowSentence.FollowerWord.target == this;
+        }
+
+        private void SetBindedAsFollower(bool doBind)
+        {
+            if (nowSentence == null) return;
+
+            if (doBind)
+            {
+                if (!GetBindedAsFollower())
+                    nowSentence.FollowerWord = (this, OnSelfWasMoved);
+            }
+            else
+            {
+                if (GetBindedAsFollower())
+                    nowSentence.FollowerWord = default;
+            }
         }
     }
 }
