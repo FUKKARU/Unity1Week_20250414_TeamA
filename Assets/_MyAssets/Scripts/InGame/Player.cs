@@ -8,6 +8,8 @@ namespace NInGame
         public Action OnPlayerFailed { get; set; } = null;
         public Action OnPlayerCleared { get; set; } = null;
 
+        private static readonly int ClearedHash = Animator.StringToHash("Cleared");
+
         protected override void OnDied() => OnPlayerFailed?.Invoke();
 
         private void OnCollisionEnter2D(Collision2D collision)
@@ -20,7 +22,11 @@ namespace NInGame
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.CompareTag("stage/goal"))
+            {
+                if (animator != null)
+                    animator.SetBool(ClearedHash, true);
                 OnPlayerCleared?.Invoke();
+            }
         }
     }
 }

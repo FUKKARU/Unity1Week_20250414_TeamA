@@ -35,7 +35,7 @@ namespace NInGame
             {
                 hasDied = true;
                 if (animator != null)
-                    animator.SetTrigger(DiedHash);
+                    animator.SetBool(DiedHash, true);
                 OnDied();
                 return;
             }
