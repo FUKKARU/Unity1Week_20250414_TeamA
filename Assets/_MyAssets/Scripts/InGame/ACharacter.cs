@@ -31,7 +31,7 @@ namespace NInGame
 
             IEnumerator DisableSelf()
             {
-                yield return new WaitForSeconds(Param.DisableIntervalOnDied);
+                yield return new WaitForSecondsRealtime(Param.DisableIntervalOnDied);
 
                 if (collider != null)
                     collider.enabled = enabled;
