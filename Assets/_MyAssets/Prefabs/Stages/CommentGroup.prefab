@@ -56,16 +56,22 @@ MonoBehaviour:
   - message: "\u306F\u3058\u307E\u3063\u305F\uFF01"
     spawnCount: 1
   - message: "\u306A\u306B\u3053\u308C"
-    spawnCount: 1
+    spawnCount: 2
   - message: "\u898B\u3048\u3066\u308B\uFF1F"
     spawnCount: 1
   - message: "\u3053\u3093\u306B\u3061\u306F\u30FC"
     spawnCount: 2
   - message: "('\u03C9')\u30CE"
     spawnCount: 1
-  minY: -140
-  maxY: 240
-  minSpeed: 40
-  maxSpeed: 60
-  spawnDelayMin: 0
-  spawnDelayMax: 1
+  - message: "\u304A\u30FC\u3044"
+    spawnCount: 1
+  - message: "\u304A\u3001\u3084\u3063\u3066\u308B"
+    spawnCount: 1
+  - message: "\u521D\u898B"
+    spawnCount: 1
+  minY: -250
+  maxY: 500
+  minSpeed: 60
+  maxSpeed: 80
+  spawnDelayMin: 0.5
+  spawnDelayMax: 2

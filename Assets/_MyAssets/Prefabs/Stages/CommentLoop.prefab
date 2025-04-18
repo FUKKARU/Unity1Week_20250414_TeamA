@@ -75,9 +75,19 @@ MonoBehaviour:
     weight: 0
   - message: www
     weight: 0
-  minY: -140
-  maxY: 240
-  minSpeed: 40
-  maxSpeed: 60
+  - message: "\u5DE6\u3084"
+    weight: 0
+  - message: "\u98DB\u3079\u3063\uFF01\uFF01"
+    weight: 0
+  - message: "\u3042\u304D\u3089\u3081\u308B\u306A\uFF01"
+    weight: 0
+  - message: "\u304A\u3082\u3057\u308D\u305D\u3046"
+    weight: 0
+  - message: "\u3050\u3075\u3075"
+    weight: 0
+  minY: -250
+  maxY: 500
+  minSpeed: 60
+  maxSpeed: 80
   spawnIntervalMin: 0.5
   spawnIntervalMax: 2

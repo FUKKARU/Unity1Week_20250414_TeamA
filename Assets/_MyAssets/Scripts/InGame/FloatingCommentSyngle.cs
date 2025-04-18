@@ -30,7 +30,7 @@ public class FloatingCommentSyngle : MonoBehaviour
     public void StartComment()
     {
         // 画面外右に初期化
-        rectTransform.anchoredPosition = new Vector2(screenWidth -100, rectTransform.anchoredPosition.y);
+        rectTransform.anchoredPosition = new Vector2(screenWidth+50 , rectTransform.anchoredPosition.y);
         isPlaying = true;
     }
 
@@ -40,7 +40,7 @@ public class FloatingCommentSyngle : MonoBehaviour
 
         rectTransform.anchoredPosition += Vector2.left * speed * Time.deltaTime;
 
-        if (rectTransform.anchoredPosition.x < -screenWidth + 100)
+        if (rectTransform.anchoredPosition.x < -screenWidth - 100)
         {
             Destroy(gameObject); // 画面外に出たら削除
         }
