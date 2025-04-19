@@ -17,4 +17,4 @@ MonoBehaviour:
   se:
     died: {fileID: 8300000, guid: 044b89b1f86a9c94892e1c5f17e8fb50, type: 3}
     cleared: {fileID: 8300000, guid: 0432075cb1b159c4395a92841c7f8ae3, type: 3}
-    clicked: {fileID: 8300000, guid: a33123d0bb1175d429b35cdbedd63655, type: 3}
+    clicked: {fileID: 8300000, guid: 98c16bbf85a612749a3866bb2c93c75b, type: 3}
