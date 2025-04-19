@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ac2b7e33ddc2454b91bf5ad192ef250, type: 3}
   m_Name: SSound
   m_EditorClassIdentifier: 
-  bgm: {fileID: 0}
+  bgm:
+    main: {fileID: 0}
+  se:
+    died: {fileID: 8300000, guid: 044b89b1f86a9c94892e1c5f17e8fb50, type: 3}
+    cleared: {fileID: 8300000, guid: 0432075cb1b159c4395a92841c7f8ae3, type: 3}
