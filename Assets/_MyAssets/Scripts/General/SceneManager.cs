@@ -14,33 +14,29 @@ namespace NGeneral
         Stage5,
         Stage6,
         Stage7,
-        Stage8
+        Stage8,
     }
 
     public static class SceneManager
     {
-        /// <summary>
-        /// null なら、現在のシーンをロードし直す
-        /// </summary>
-        public static void Load(this Scene? scene)
+        public static void Load(this Scene scene)
         {
             Time.timeScale = 1;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
 
-            string sceneName = (scene ?? NowScene()).ToSceneName();
-            UniSceneManager.LoadScene(sceneName);
+            UniSceneManager.LoadScene(scene.ToSceneName());
         }
 
         /// <summary>
         /// 現在シーンを取得
         /// </summary>
-        public static Scene NowScene() => UniSceneManager.GetActiveScene().name.ToSceneEnum();
+        public static Scene NowScene => UniSceneManager.GetActiveScene().name.ToSceneEnum();
 
         /// <summary>
         /// 次シーンを取得 (最終ステージの場合は、タイトル)
         /// </summary>
-        public static Scene NextScene() => UniSceneManager.GetActiveScene().name.ToSceneEnum() switch
+        public static Scene NextScene => NowScene switch
         {
             Scene.Title => Scene.StageSelect,
             Scene.StageSelect => Scene.Stage1,

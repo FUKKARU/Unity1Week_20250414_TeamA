@@ -39,7 +39,7 @@ namespace NScriptableObject
                 if (overrides == null || overrides.Length <= 0)
                     return null;
 
-                Scene nowScene = SceneManager.NowScene();
+                Scene nowScene = SceneManager.NowScene;
                 foreach (var @override in overrides)
                 {
                     if (@override.TargetScene == nowScene)

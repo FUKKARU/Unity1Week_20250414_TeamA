@@ -42,12 +42,10 @@ namespace NInGame
 
         private IEnumerator ShowCoroutine(bool cleared)
         {
-            // 1�b�҂��Ă��� Time.timeScale ���~�߂�i�A�j���[�V�����Đ��̂��߁j
             yield return new WaitForSeconds(1f);
 
             Time.timeScale = 0f;
 
-            // �ȉ��͌��� Show ���\�b�h�̏����Ɠ���
             if (cleared)
             {
                 if (text != null)
@@ -58,7 +56,7 @@ namespace NInGame
                     backButtonText.text = "I'll be BACK";
 
                 if (retryButton != null)
-                    retryButton.onClick.AddListener(() => OnLoadSceneButtonClicked(SceneManager.NextScene()));
+                    retryButton.onClick.AddListener(() => OnLoadSceneButtonClicked(SceneManager.NextScene));
                 if (backButton != null)
                     backButton.onClick.AddListener(() => OnLoadSceneButtonClicked(Scene.StageSelect));
             }
@@ -72,7 +70,7 @@ namespace NInGame
                     backButtonText.text = "I'll be BACK";
 
                 if (retryButton != null)
-                    retryButton.onClick.AddListener(() => OnLoadSceneButtonClicked(null));
+                    retryButton.onClick.AddListener(() => OnLoadSceneButtonClicked(SceneManager.NowScene));
                 if (backButton != null)
                     backButton.onClick.AddListener(() => OnLoadSceneButtonClicked(Scene.StageSelect));
             }
@@ -97,7 +95,7 @@ namespace NInGame
                 });
         }
 
-        private void OnLoadSceneButtonClicked(Scene? scene)
+        private void OnLoadSceneButtonClicked(Scene scene)
         {
             if (hasButtonClicked) return;
             hasButtonClicked = true;
