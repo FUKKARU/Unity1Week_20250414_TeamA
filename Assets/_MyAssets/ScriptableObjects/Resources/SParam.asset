@@ -17,7 +17,7 @@ MonoBehaviour:
     runVelocity: 5
     jumpForce: 5
     jumpInterval: 1.5
-    killY: -5
+    killY: -10
     disableIntervalOnDied: 0.5
     resultIntervalOnCleared: 1
     overrides: []
