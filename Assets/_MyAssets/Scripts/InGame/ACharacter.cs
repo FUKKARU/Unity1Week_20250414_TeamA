@@ -22,6 +22,7 @@ namespace NInGame
         private static readonly int JumpHash = Animator.StringToHash("Jump");
         private static readonly int IdleHash = Animator.StringToHash("Idle");
 
+
         public State NowState { get; set; } = State.Stop;
         private State preState = State.Stop;
 
@@ -29,11 +30,25 @@ namespace NInGame
         protected virtual void OnDied()
         {
             AudioManager.Instance.DoPlay(SSound.Entity.SE.Died, AudioManager.AudioType.SE);
+            if (animator != null)
+                animator.SetTrigger(DiedHash);
+            var rb = GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector2.zero;
+                rb.bodyType = RigidbodyType2D.Kinematic;
+            }
+
+            var col = GetComponent<Collider2D>();
+            if (col != null)
+                col.enabled = false;
+
             StartCoroutine(DisableSelf());
 
             IEnumerator DisableSelf()
             {
-                yield return new WaitForSecondsRealtime(Param.DisableIntervalOnDied);
+                // Animatorの"Die"アニメの長さに応じて遅らせる（例：1秒）
+                yield return new WaitForSecondsRealtime(1.0f);
 
                 if (collider != null)
                     collider.enabled = false;
@@ -57,7 +72,7 @@ namespace NInGame
             {
                 hasDied = true;
                 if (animator != null)
-                    animator.SetBool(DiedHash, true);
+                    animator.SetTrigger(DiedHash);
                 OnDied();
                 return;
             }

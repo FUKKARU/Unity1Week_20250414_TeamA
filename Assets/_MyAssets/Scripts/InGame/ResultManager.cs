@@ -34,8 +34,17 @@ namespace NInGame
             if (isShowing) return;
             isShowing = true;
 
+            StartCoroutine(ShowCoroutine(cleared));
+        }
+
+        private IEnumerator ShowCoroutine(bool cleared)
+        {
+            // 1秒待ってから Time.timeScale を止める（アニメーション再生のため）
+            yield return new WaitForSeconds(1f);
+
             Time.timeScale = 0f;
 
+            // 以下は元の Show メソッドの処理と同じ
             if (cleared)
             {
                 if (text != null)
@@ -66,23 +75,23 @@ namespace NInGame
             }
 
             StartCoroutine(DoResultTween());
+        }
 
-            IEnumerator DoResultTween()
-            {
-                yield return new WaitForSecondsRealtime(CharacterParameters.ResultIntervalOnCleared);
+        private IEnumerator DoResultTween()
+        {
+            yield return new WaitForSecondsRealtime(CharacterParameters.ResultIntervalOnCleared);
 
-                if (parent == null) yield break;
+            if (parent == null) yield break;
 
-                parent.gameObject.SetActive(true);
-                parent.DOAnchorPosY(0, 0.5f)
-                    .SetEase(Ease.OutBack)
-                    .SetUpdate(true)
-                    .OnComplete(() =>
-                    {
-                        if (frontBlockingImage != null)
-                            frontBlockingImage.gameObject.SetActive(false);
-                    });
-            }
+            parent.gameObject.SetActive(true);
+            parent.DOAnchorPosY(0, 0.5f)
+                .SetEase(Ease.OutBack)
+                .SetUpdate(true)
+                .OnComplete(() =>
+                {
+                    if (frontBlockingImage != null)
+                        frontBlockingImage.gameObject.SetActive(false);
+                });
         }
 
         private void OnLoadSceneButtonClicked(Scene? scene)
