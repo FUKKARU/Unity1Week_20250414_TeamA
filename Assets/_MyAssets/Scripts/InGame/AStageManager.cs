@@ -1,4 +1,5 @@
 using System;
+using NScriptableObject;
 using UnityEngine;
 
 namespace NInGame
@@ -72,6 +73,8 @@ namespace NInGame
             }
 
             InitDstData();
+
+            AudioManager.Instance.DoPlay(SSound.Entity.BGM.Main, AudioManager.AudioType.BGM);
         }
 
         private void Update()
