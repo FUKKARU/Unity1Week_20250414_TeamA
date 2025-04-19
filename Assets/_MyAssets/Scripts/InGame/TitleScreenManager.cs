@@ -16,8 +16,6 @@ namespace NInGame
                 startButton.onClick.AddListener(() => Scene.StageSelect.Load());
                 AudioManager.Instance.DoPlay(SSound.Entity.SE.Clicked, AudioManager.AudioType.SE);
             }
-
-            AudioManager.Instance.DoPlay(SSound.Entity.BGM.Main, AudioManager.AudioType.BGM);
         }
     }
 }
