@@ -13,6 +13,8 @@ namespace NGeneral
         Stage4,
         Stage5,
         Stage6,
+        Stage7,
+        Stage8
     }
 
     public static class SceneManager
@@ -47,7 +49,9 @@ namespace NGeneral
             Scene.Stage3 => Scene.Stage4,
             Scene.Stage4 => Scene.Stage5,
             Scene.Stage5 => Scene.Stage6,
-            Scene.Stage6 => Scene.Title,
+            Scene.Stage6 => Scene.Stage7,
+            Scene.Stage7 => Scene.Stage8,
+            Scene.Stage8 => Scene.Title,
             _ => Scene.Title,
         };
 
@@ -61,6 +65,8 @@ namespace NGeneral
             Scene.Stage4 => "Stage4",
             Scene.Stage5 => "Stage5",
             Scene.Stage6 => "Stage6",
+            Scene.Stage7 => "Stage7",
+            Scene.Stage8 => "Stage8",
             _ => "Title",
         };
 
@@ -76,6 +82,8 @@ namespace NGeneral
                 "Stage4" => Scene.Stage4,
                 "Stage5" => Scene.Stage5,
                 "Stage6" => Scene.Stage6,
+                "Stage7" => Scene.Stage7,
+                "Stage8" => Scene.Stage8,
                 _ => Scene.Title,
             };
         }
