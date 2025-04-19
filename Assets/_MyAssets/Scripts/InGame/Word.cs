@@ -107,18 +107,17 @@ namespace NInGame
         {
             if (!isFollowing) return;
 
-            Vector2 localPoint;
             RectTransform canvasRect = canvas.GetComponent<RectTransform>();
             Vector2 screenPosition = Input.mousePosition;
 
             // スクリーン座標をキャンバスのローカル座標に変換
-            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPosition, Camera.main, out localPoint))
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPosition, Camera.main, out Vector2 localPoint))
             {
-                Vector3 pos = localPoint;
+                Vector3 pos = localPoint; // z座標は0でOK
 
                 // ウィンドウ内に制限
-                float canvasWidthHalf = canvasRect.rect.width * 0.45f;
-                float canvasHeightHalf = canvasRect.rect.height * 0.45f;
+                float canvasWidthHalf = canvasRect.rect.width * 0.45f; // 少し小さく
+                float canvasHeightHalf = canvasRect.rect.height * 0.45f; // 少し小さく
 
                 pos.x = Mathf.Clamp(pos.x, -canvasWidthHalf, canvasWidthHalf);
                 pos.y = Mathf.Clamp(pos.y, -canvasHeightHalf, canvasHeightHalf);
