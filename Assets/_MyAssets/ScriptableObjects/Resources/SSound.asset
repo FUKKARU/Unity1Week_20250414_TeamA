@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: SSound
   m_EditorClassIdentifier: 
   bgm:
-    main: {fileID: 0}
+    main: {fileID: 8300000, guid: 1e1bbc62b91c8124fa677e5205831d34, type: 3}
   se:
     died: {fileID: 8300000, guid: 044b89b1f86a9c94892e1c5f17e8fb50, type: 3}
     cleared: {fileID: 8300000, guid: 0432075cb1b159c4395a92841c7f8ae3, type: 3}
+    clicked: {fileID: 8300000, guid: a33123d0bb1175d429b35cdbedd63655, type: 3}
