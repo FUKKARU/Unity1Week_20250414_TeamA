@@ -20,6 +20,7 @@ namespace NInGame
         private static readonly int RunLeftHash = Animator.StringToHash("RunLeft");
         private static readonly int RunRightHash = Animator.StringToHash("RunRight");
         private static readonly int JumpHash = Animator.StringToHash("Jump");
+        private static readonly int IdleHash = Animator.StringToHash("Idle");
 
         public State NowState { get; set; } = State.Stop;
         private State preState = State.Stop;
@@ -67,6 +68,7 @@ namespace NInGame
 
                 StopMove();
                 StopJump();
+                SetBoolsToAnimator(NowState);
 
                 switch (NowState)
                 {
@@ -89,6 +91,9 @@ namespace NInGame
                     case State.Jump:
                         Jump(Param.JumpForce);
                         SetBoolsToAnimator(State.Jump);
+                        break;
+                    case State.Stop:
+                        SetBoolsToAnimator(State.Stop);
                         break;
                     default:
                         break;
@@ -192,11 +197,36 @@ namespace NInGame
         {
             if (animator == null) return;
 
-            animator.SetBool(WalkLeftHash, state == State.WalkLeft);
-            animator.SetBool(WalkRightHash, state == State.WalkRight);
-            animator.SetBool(RunLeftHash, state == State.RunLeft);
-            animator.SetBool(RunRightHash, state == State.RunRight);
-            animator.SetBool(JumpHash, state == State.Jump);
+            // すべてのboolをfalseに
+            animator.SetBool(WalkLeftHash, false);
+            animator.SetBool(WalkRightHash, false);
+            animator.SetBool(RunLeftHash, false);
+            animator.SetBool(RunRightHash, false);
+            animator.SetBool(IdleHash, false);
+            animator.SetBool(JumpHash, false); 
+
+            // 対応するステートだけtrueまたはtrigger
+            switch (state)
+            {
+                case State.WalkLeft:
+                    animator.SetBool(WalkLeftHash, true);
+                    break;
+                case State.WalkRight:
+                    animator.SetBool(WalkRightHash, true);
+                    break;
+                case State.RunLeft:
+                    animator.SetBool(RunLeftHash, true);
+                    break;
+                case State.RunRight:
+                    animator.SetBool(RunRightHash, true);
+                    break;
+                case State.Jump:
+                    animator.SetBool(JumpHash, true);
+                    break;
+                case State.Stop:
+                    animator.SetBool(IdleHash, true); // IdleはboolとしてON
+                    break;
+            }
         }
     }
 }

@@ -17,6 +17,12 @@ public class FloatingCommentSyngle : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
         screenWidth = Screen.width;
         GetComponent<TextMeshProUGUI>().text = message;
+        // レイキャスト無効化
+        var text = GetComponent<TextMeshProUGUI>();
+        if (text != null)
+        {
+            text.raycastTarget = false;
+        }
     }
 
     void Start()

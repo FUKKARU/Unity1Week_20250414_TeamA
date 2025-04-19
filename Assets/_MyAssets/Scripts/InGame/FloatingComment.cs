@@ -12,6 +12,12 @@ public class FloatingComment : MonoBehaviour
     {
         rectTransform = GetComponent<RectTransform>();
         screenWidth = Screen.width;
+        // レイキャスト無効化
+        var text = GetComponent<TextMeshProUGUI>();
+        if (text != null)
+        {
+            text.raycastTarget = false;
+        }
     }
 
     public void Init(string message, float speed, float yPosition)

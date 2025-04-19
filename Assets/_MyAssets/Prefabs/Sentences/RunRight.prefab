@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1638858812915471183, guid: 61eab8a7e1d30443c9d2fa0227630857, type: 3}
       propertyPath: speed
-      value: 2.5
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 3770818409007079286, guid: 61eab8a7e1d30443c9d2fa0227630857, type: 3}
       propertyPath: m_Pivot.x
