@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using NScriptableObject;
 using State = NInGame.CharacterState;
-using Param = NInGame.CharacterParameters;
 
 namespace NInGame
 {
@@ -14,6 +13,8 @@ namespace NInGame
         [SerializeField] protected Animator animator;
         [SerializeField] protected SpriteRenderer spriteRenderer;
 
+        private SParam.CCharacter param => SParam.Entity.Character;
+
         private static readonly int DiedHash = Animator.StringToHash("Died");
         private static readonly int WalkLeftHash = Animator.StringToHash("WalkLeft");
         private static readonly int WalkRightHash = Animator.StringToHash("WalkRight");
@@ -21,7 +22,6 @@ namespace NInGame
         private static readonly int RunRightHash = Animator.StringToHash("RunRight");
         private static readonly int JumpHash = Animator.StringToHash("Jump");
         private static readonly int IdleHash = Animator.StringToHash("Idle");
-
 
         public State NowState { get; set; } = State.Stop;
         private State preState = State.Stop;
@@ -68,7 +68,7 @@ namespace NInGame
         {
             if (hasDied) return;
 
-            if (transform.position.y < Param.KillY)
+            if (transform.position.y < param.KillY)
             {
                 hasDied = true;
                 if (animator != null)
@@ -88,23 +88,23 @@ namespace NInGame
                 switch (NowState)
                 {
                     case State.WalkLeft:
-                        Move(-Param.WalkVelocity);
+                        Move(-param.WalkVelocity);
                         SetBoolsToAnimator(State.WalkLeft);
                         break;
                     case State.WalkRight:
-                        Move(Param.WalkVelocity);
+                        Move(param.WalkVelocity);
                         SetBoolsToAnimator(State.WalkRight);
                         break;
                     case State.RunLeft:
-                        Move(-Param.RunVelocity);
+                        Move(-param.RunVelocity);
                         SetBoolsToAnimator(State.RunLeft);
                         break;
                     case State.RunRight:
-                        Move(Param.RunVelocity);
+                        Move(param.RunVelocity);
                         SetBoolsToAnimator(State.RunRight);
                         break;
                     case State.Jump:
-                        Jump(Param.JumpForce);
+                        Jump(param.JumpForce);
                         SetBoolsToAnimator(State.Jump);
                         break;
                     case State.Stop:
@@ -160,7 +160,7 @@ namespace NInGame
                 while (true)
                 {
                     rigidbody.AddForce(transform.up * force, ForceMode2D.Impulse);
-                    yield return new WaitForSeconds(Param.JumpInterval);
+                    yield return new WaitForSeconds(param.JumpInterval);
                 }
             }
         }
@@ -218,7 +218,7 @@ namespace NInGame
             animator.SetBool(RunLeftHash, false);
             animator.SetBool(RunRightHash, false);
             animator.SetBool(IdleHash, false);
-            animator.SetBool(JumpHash, false); 
+            animator.SetBool(JumpHash, false);
 
             // 対応するステートだけtrueまたはtrigger
             switch (state)

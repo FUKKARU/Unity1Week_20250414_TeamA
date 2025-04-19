@@ -26,12 +26,14 @@ namespace NGeneral
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
 
-            string sceneName = scene?.ToSceneName() ?? string.Empty;
-            if (string.IsNullOrEmpty(sceneName))
-                sceneName = UniSceneManager.GetActiveScene().name;
-
+            string sceneName = (scene ?? NowScene()).ToSceneName();
             UniSceneManager.LoadScene(sceneName);
         }
+
+        /// <summary>
+        /// 現在シーンを取得
+        /// </summary>
+        public static Scene NowScene() => UniSceneManager.GetActiveScene().name.ToSceneEnum();
 
         /// <summary>
         /// 次シーンを取得 (最終ステージの場合は、タイトル)
@@ -59,7 +61,7 @@ namespace NGeneral
             Scene.Stage4 => "Stage4",
             Scene.Stage5 => "Stage5",
             Scene.Stage6 => "Stage6",
-            _ => string.Empty,
+            _ => "Title",
         };
 
         private static Scene ToSceneEnum(this string sceneName)

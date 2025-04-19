@@ -1,9 +1,10 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using Text = TMPro.TextMeshProUGUI;
 using NGeneral;
-using System.Collections;
+using NScriptableObject;
+using Text = TMPro.TextMeshProUGUI;
 
 namespace NInGame
 {
@@ -16,6 +17,8 @@ namespace NInGame
         [SerializeField] private Text retryButtonText;
         [SerializeField] private Text backButtonText;
         [SerializeField] private Image frontBlockingImage;
+
+        private SParam.CCharacter param => SParam.Entity.Character;
 
         private bool isShowing = false;
         private bool hasButtonClicked = false;
@@ -39,12 +42,12 @@ namespace NInGame
 
         private IEnumerator ShowCoroutine(bool cleared)
         {
-            // 1•b‘Ò‚Á‚Ä‚©‚ç Time.timeScale ‚ğ~‚ß‚éiƒAƒjƒ[ƒVƒ‡ƒ“Ä¶‚Ì‚½‚ßj
+            // 1ï¿½bï¿½Ò‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ Time.timeScale ï¿½ï¿½ï¿½~ï¿½ß‚ï¿½iï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Äï¿½ï¿½Ì‚ï¿½ï¿½ßj
             yield return new WaitForSeconds(1f);
 
             Time.timeScale = 0f;
 
-            // ˆÈ‰º‚ÍŒ³‚Ì Show ƒƒ\ƒbƒh‚Ìˆ—‚Æ“¯‚¶
+            // ï¿½È‰ï¿½ï¿½ÍŒï¿½ï¿½ï¿½ Show ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Ìï¿½ï¿½ï¿½ï¿½Æ“ï¿½ï¿½ï¿½
             if (cleared)
             {
                 if (text != null)
@@ -79,7 +82,7 @@ namespace NInGame
 
         private IEnumerator DoResultTween()
         {
-            yield return new WaitForSecondsRealtime(CharacterParameters.ResultIntervalOnCleared);
+            yield return new WaitForSecondsRealtime(param.ResultIntervalOnCleared);
 
             if (parent == null) yield break;
 
