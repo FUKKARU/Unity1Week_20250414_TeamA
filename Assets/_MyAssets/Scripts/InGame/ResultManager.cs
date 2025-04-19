@@ -100,6 +100,8 @@ namespace NInGame
             if (hasButtonClicked) return;
             hasButtonClicked = true;
 
+            AudioManager.Instance.DoPlay(SSound.Entity.SE.Clicked, AudioManager.AudioType.SE);
+
             scene.Load();
         }
     }

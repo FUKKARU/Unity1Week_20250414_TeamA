@@ -23,6 +23,9 @@ namespace NScriptableObject
 
             [SerializeField] private AC cleared;
             public AC Cleared => cleared;
+
+            [SerializeField] private AC clicked;
+            public AC Clicked => clicked;
         }
 
         [SerializeField] private Bgm bgm;

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using NGeneral;
+using NScriptableObject;
 
 namespace NInGame
 {
@@ -26,10 +27,13 @@ namespace NInGame
             ExecuteEvent(button7, Scene.Stage7);
             ExecuteEvent(button8, Scene.Stage8);
         }
-        private void ExecuteEvent(Button button,Scene scene)
+        private void ExecuteEvent(Button button, Scene scene)
         {
             if (button != null)
+            {
                 button.onClick.AddListener(() => scene.Load());
+                AudioManager.Instance.DoPlay(SSound.Entity.SE.Clicked, AudioManager.AudioType.SE);
+            }
         }
     }
 }
