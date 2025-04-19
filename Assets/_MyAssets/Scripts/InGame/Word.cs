@@ -20,7 +20,7 @@ namespace NInGame
         // どこに嵌め込まれているかを保存
         private CharacterState putState = CharacterState.None;
 
-        public Vector2 Position => transform.localPosition;
+        public Vector2 Position => transform.position;
 
         // 単語をはめ込めるか調べる
         public Func<Transform, (Vector3?, CharacterState, bool, Sentence)> CheckPutOnPointerUp { get; set; } = null;
@@ -31,16 +31,10 @@ namespace NInGame
         // クリックされる前の、Sentence にバインドしていたかの情報を保存
         private bool bindedBeforePointerDown = false;
 
-        // ゲーム開始時の、Canvasの座標を保存
-        private Vector2 canvasPositionOnStart = Vector2.zero;
-
         private void Start()
         {
             initPosition = transform.localPosition;
             putPosition = initPosition;
-
-            if (canvas != null)
-                canvasPositionOnStart = canvas.transform.position;
 
             if (eventTrigger != null)
             {
