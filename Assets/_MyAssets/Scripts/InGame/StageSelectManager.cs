@@ -32,8 +32,11 @@ namespace NInGame
         {
             if (button != null)
             {
-                button.onClick.AddListener(() => scene.Load());
-                AudioManager.Instance.DoPlay(SSound.Entity.SE.Clicked, AudioManager.AudioType.SE);
+                button.onClick.AddListener(() =>
+                {
+                    AudioManager.Instance.DoPlay(SSound.Entity.SE.Clicked, AudioManager.AudioType.SE);
+                    scene.Load();
+                });
             }
         }
     }

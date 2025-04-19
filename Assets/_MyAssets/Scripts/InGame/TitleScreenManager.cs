@@ -13,8 +13,11 @@ namespace NInGame
         {
             if (startButton != null)
             {
-                startButton.onClick.AddListener(() => Scene.StageSelect.Load());
-                AudioManager.Instance.DoPlay(SSound.Entity.SE.Clicked, AudioManager.AudioType.SE);
+                startButton.onClick.AddListener(() =>
+                {
+                    AudioManager.Instance.DoPlay(SSound.Entity.SE.Clicked, AudioManager.AudioType.SE);
+                    Scene.StageSelect.Load();
+                });
             }
         }
     }
