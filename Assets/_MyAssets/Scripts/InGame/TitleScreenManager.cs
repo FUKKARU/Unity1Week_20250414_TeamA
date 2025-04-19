@@ -1,24 +1,17 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using NGeneral;
 
-public class TitleScreenManager : MonoBehaviour
+namespace NInGame
 {
-    // ゲームシーン名
-    [SerializeField] private string gameSceneName = "StageSelect";
-
-    // スタートボタンが押されたときに呼ばれる
-    public void OnStartGameButton()
+    public sealed class TitleScreenManager : MonoBehaviour
     {
-        SceneManager.LoadScene(gameSceneName);
-    }
+        [SerializeField] private Button startButton;
 
-    //// 終了ボタンが押されたときに呼ばれる
-    //public void OnQuitButton()
-    ////{
-//#if UNITY_EDITOR
-//        UnityEditor.EditorApplication.isPlaying = false;
-//#else
-//        Application.Quit();
-//#endif
-//    }
+        private void Start()
+        {
+            if (startButton != null)
+                startButton.onClick.AddListener(() => Scene.StageSelect.Load());
+        }
+    }
 }
