@@ -26,7 +26,10 @@ namespace NInGame
             ExecuteEvent(button6, Scene.Stage6);
             ExecuteEvent(button7, Scene.Stage7);
             ExecuteEvent(button8, Scene.Stage8);
+
+            AudioManager.Instance.DoPlay(SSound.Entity.BGM.Main, AudioManager.AudioType.BGM);
         }
+
         private void ExecuteEvent(Button button, Scene scene)
         {
             if (button != null)
