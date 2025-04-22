@@ -36,7 +36,7 @@ public class FloatingCommentSyngle : MonoBehaviour
     public void StartComment()
     {
         // ‰æ–ÊŠO‰E‚É‰Šú‰»
-        rectTransform.anchoredPosition = new Vector2(screenWidth+50 , rectTransform.anchoredPosition.y);
+        rectTransform.anchoredPosition = new Vector2(screenWidth , rectTransform.anchoredPosition.y);
         isPlaying = true;
     }
 
