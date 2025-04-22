@@ -2130,12 +2130,24 @@ PrefabInstance:
       value: "\u9003\u3052\u308D\uFF01\uFF01"
       objectReference: {fileID: 0}
     - target: {fileID: 2675124750206525335, guid: 0f5649f9b3cc0734e976ca2ef2630e59, type: 3}
+      propertyPath: commentGroup.Array.data[1].message
+      value: "\u3053\u308F"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2675124750206525335, guid: 0f5649f9b3cc0734e976ca2ef2630e59, type: 3}
       propertyPath: commentGroup.Array.data[4].message
       value: "\u3084\u3070\u3044"
       objectReference: {fileID: 0}
     - target: {fileID: 2675124750206525335, guid: 0f5649f9b3cc0734e976ca2ef2630e59, type: 3}
+      propertyPath: commentGroup.Array.data[7].message
+      value: "\u3067\u3063\u304B"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2675124750206525335, guid: 0f5649f9b3cc0734e976ca2ef2630e59, type: 3}
       propertyPath: commentGroup.Array.data[8].message
       value: "\u8D70\u308C\uFF01"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2675124750206525335, guid: 0f5649f9b3cc0734e976ca2ef2630e59, type: 3}
+      propertyPath: commentGroup.Array.data[0].spawnCount
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8219713120548600164, guid: 0f5649f9b3cc0734e976ca2ef2630e59, type: 3}
       propertyPath: m_Name
@@ -4775,7 +4787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27d71d0ab66054e4383bdda9e7f16ae7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 0.7
 --- !u!95 &6168760171021115821
 Animator:
   serializedVersion: 7
